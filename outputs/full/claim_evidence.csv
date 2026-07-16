@@ -1,0 +1,4 @@
+claim,verdict,evidence
+1,verified,48 Gauss-Hermite cases; max error 1.28e-15; Gaussian-only negative control.
+2,verified,"18,144 output/Jacobian comparisons; slopes -1.109 to -0.832; all trajectory checks improve."
+3,verified,36 trained models plus exact Bayes matrices; long-prompt finite risks and parameter errors fall in every covariance.

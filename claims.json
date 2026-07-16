@@ -1,0 +1,5 @@
+[
+  {"text": "Softmax attention converges to linear operator in infinite-prompt limit for i.i.d. Gaussian inputs", "status": "unverified"},
+  {"text": "Establishes non-asymptotic concentration bounds for softmax attention output and gradient stability along training trajectory", "status": "unverified"},
+  {"text": "Large-prompt softmax attention inherits analytical structure of linear attention enabling transfer of optimization analyses", "status": "unverified"}
+]

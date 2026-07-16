@@ -1,0 +1,20 @@
+{
+  "space_id": "DineshAI/MvuCgK0Qns",
+  "emoji": "🎯",
+  "created_at": "2026-07-16T16:20:05+00:00",
+  "last_page": "methods-tests-and-provenance",
+  "local_artifacts": [
+    "softmax-linear-attention-repro/softmax-linear-attention-cpu-reproduction:v0"
+  ],
+  "paper": {
+    "arxiv_id": "2512.11784"
+  },
+  "tags": [
+    "icml2026-repro",
+    "paper-MvuCgK0Qns"
+  ],
+  "autosync": false,
+  "private": false,
+  "local_dashboards": {},
+  "artifacts_bucket": "DineshAI/MvuCgK0Qns-artifacts"
+}

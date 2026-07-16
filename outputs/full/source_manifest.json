@@ -1,0 +1,79 @@
+{
+  "claims.json": {
+    "sha256": "1cee0bd44541a7818c4e7a4f58d31a7bebff3ccf854498d95702bfec41ce1556",
+    "bytes": 469
+  },
+  "outputs/full/bayes_transfer.csv": {
+    "sha256": "da77be2d35503532f1d608c0616057625d2f5be3b1c4977c261cfc925f45c487",
+    "bytes": 1167
+  },
+  "outputs/full/claim_evidence.csv": {
+    "sha256": "a3e1057e7aa332e1c53ab4dcb00aedb3ac7b4320c8c72c7ccdfa3c62e343a62d",
+    "bytes": 343
+  },
+  "outputs/full/concentration_aggregate.csv": {
+    "sha256": "c877fc2a4b3db0f937586ced43038ba90635cd2dcc93a22d346f5b239d0de50d",
+    "bytes": 1829
+  },
+  "outputs/full/concentration_rates.csv": {
+    "sha256": "76fbc59b5994ea1703da5f2d5bce2cd5154086844a7c563e6c4f10480dbba297",
+    "bytes": 823
+  },
+  "outputs/full/concentration_trials.csv": {
+    "sha256": "efa0923390b106c9445ed48530e960288176e40ccbdb74c455d6d5b4009a6764",
+    "bytes": 540005
+  },
+  "outputs/full/quadrature_identity.csv": {
+    "sha256": "1d4dd5d3c6a6eaa844bb01cf239df1eb1680a6c2d6b5113de22f99eaec18aeb6",
+    "bytes": 2424
+  },
+  "outputs/full/softmax_linear_evidence.png": {
+    "sha256": "7bc5e48d0c6de239dffd75627259b32a1e83bd53e0789f350ae2b8f5c23b86fc",
+    "bytes": 211883
+  },
+  "outputs/full/summary.json": {
+    "sha256": "0f28c16d2a6cf5adb51b62dff49a20cb17884fd232315cddd4ad376ca47a9631",
+    "bytes": 2008
+  },
+  "outputs/full/trained_models.csv": {
+    "sha256": "007436cd4b7939ef97bf49f788de6d3e5cef2ab2846727a171f675ccdc2ef0ce",
+    "bytes": 3112
+  },
+  "outputs/full/trajectory_gradients.csv": {
+    "sha256": "70365e807e0294cb9fab5ea720f9b8313b059e6af6c2e04324a99ca3104e81b1",
+    "bytes": 2339
+  },
+  "paper.pdf": {
+    "sha256": "3e1c12c82e55e253f2933c139a676b1a642e552637a17ca273e3f0dc47423ede",
+    "bytes": 1000188
+  },
+  "reproduction/ENVIRONMENT.md": {
+    "sha256": "6b56c4c309b2fc5baf3e8539c7440fcb26589b72eefd4d3232622cbd9234431f",
+    "bytes": 307
+  },
+  "reproduction/build_logbook.py": {
+    "sha256": "b0c5a087c053c3369192f161082ea4bcaf120ba5c2c9eed58929da35c784c88f",
+    "bytes": 9550
+  },
+  "reproduction/log_bundle.py": {
+    "sha256": "5a86323b25d0103bdf2a6dbd0a63c9670697711152b270b74212c405b8326efb",
+    "bytes": 1178
+  },
+  "reproduction/reproduce.py": {
+    "sha256": "344759666b3a32ec6d3bff5e2da81985e8dc60aca71859ef72ae3e9bda57f3cf",
+    "bytes": 17018
+  },
+  "reproduction/requirements-cpu.txt": {
+    "sha256": "19985353b724dd368308fbd6084e55cb63e894c3f645adf4996d2e124b191588",
+    "bytes": 76
+  },
+  "reproduction/test_reproduction.py": {
+    "sha256": "06f934ad9d4c1c90ddf508f6a3275d0269848d42217a95b8426dedd11038dcb1",
+    "bytes": 4123
+  },
+  "official_code": {
+    "repository": "https://github.com/eboursier/softmax_as_linear.git",
+    "commit": "8fa49b308eaac168bc4edcdc06f26703ac4520f8",
+    "imported_by_reproduction": false
+  }
+}

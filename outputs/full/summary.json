@@ -1,0 +1,65 @@
+{
+  "paper": {
+    "openreview": "MvuCgK0Qns",
+    "arxiv": "2512.11784"
+  },
+  "claim_1": {
+    "verdict": "verified",
+    "quadrature_cases": 48,
+    "max_quadrature_abs_error": 1.27675647831893e-15,
+    "rademacher_negative_control": {
+      "z": 2.0,
+      "rademacher_output": 0.9640275800758169,
+      "gaussian_affine_prediction": 2.0,
+      "absolute_residual": 1.035972419924183
+    },
+    "finite_output_reductions": {
+      "isotropic": 76.94737920479254,
+      "rotated_condition_8": 41.3524767987845,
+      "toeplitz_rho_0.5": 44.222672042975205
+    }
+  },
+  "claim_2": {
+    "verdict": "verified",
+    "query_metric_comparisons": 18144,
+    "rate_slope_min": -1.1088146455990573,
+    "rate_slope_max": -0.8316763328439224,
+    "rate_r_squared_min": 0.9551631355788126,
+    "trajectory_checkpoints": 24,
+    "long_prompt_gradient_wins": 24
+  },
+  "claim_3": {
+    "verdict": "verified",
+    "trained_models": 36,
+    "trained_reductions": {
+      "isotropic": {
+        "trained_risk_reduction_L16_to_L1024": 53.86273154631195,
+        "parameter_distance_reduction_L16_to_L1024": 20.045129149990846
+      },
+      "rotated_condition_8": {
+        "trained_risk_reduction_L16_to_L1024": 43.91019487788107,
+        "parameter_distance_reduction_L16_to_L1024": 206.37885217210552
+      },
+      "toeplitz_rho_0.5": {
+        "trained_risk_reduction_L16_to_L1024": 44.28132032279648,
+        "parameter_distance_reduction_L16_to_L1024": 107.81784871780192
+      }
+    },
+    "bayes_risk_reductions": {
+      "isotropic": 263.21637763065297,
+      "rotated_condition_8": 248.0909901962841,
+      "toeplitz_rho_0.5": 232.1195796022963
+    },
+    "max_bayes_operator_identity_error": 9.87213553952913e-17,
+    "max_infinite_bayes_risk": 1.3518530658218422e-32
+  },
+  "compute": {
+    "wall_seconds": 23.259566236985847,
+    "cpu_only": true,
+    "gpu_used": false,
+    "python": "3.12.13",
+    "numpy": "2.3.5",
+    "scipy": "1.17.1",
+    "platform": "Linux-7.0.9-arch2-1-x86_64-with-glibc2.43"
+  }
+}
