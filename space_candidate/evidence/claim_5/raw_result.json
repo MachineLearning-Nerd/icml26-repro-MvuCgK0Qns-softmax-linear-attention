@@ -1,0 +1,31 @@
+{
+  "claim_id": 5,
+  "source": {
+    "paper_sha256": "6ae468a4032e920d159b609a78f1860bdf90004c7a692df60c601d9e3c9ff4c2",
+    "primary_reference_sha256": "3612edf523d550dfc549d1d47a0294f2bd2da7642bddfa56b8d4a0fa0bd93446"
+  },
+  "verified_subcertificate": {
+    "pointwise_squared_error": "0 for every w and x",
+    "risk": "0",
+    "bayes_optimality": "squared loss is nonnegative, so the attained zero risk is Bayes optimal"
+  },
+  "research_routes": {
+    "route_1_compositional_proof_audit": {"result": "unresolved dependencies"},
+    "route_2_direct_bayes_algebra": {"result": "verified endpoint only"},
+    "route_3_boundary_dynamics_and_condition_audit": {"result": "no falsification, universal proof still open"}
+  },
+  "dependency_gap_certificate": {
+    "domain_implication_holds": false,
+    "condition_implication_counterexample": {
+      "d": 1,
+      "Sigma_op": "1/4",
+      "alpha": "4",
+      "paper_condition_holds": true,
+      "jmlr_left_side": "4",
+      "jmlr_condition_holds": false
+    },
+    "is_counterexample_to_theorem": false
+  },
+  "verdict": "BLOCKED",
+  "confidence": "MEDIUM"
+}

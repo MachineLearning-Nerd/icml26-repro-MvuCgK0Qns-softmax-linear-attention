@@ -1,0 +1,15 @@
+{
+  "claim_id": 5,
+  "paper_anchor": "Section 5, Theorem 5.1, HTML id S5.Thmtheorem1",
+  "proof_anchor": "Appendix E.2, HTML id A5.SS2",
+  "verdict_target": "BLOCKED",
+  "literal_contract": "For every invertible Sigma and every Equation (9) initialization in the displayed alpha interval, finite-prompt softmax gradient flow has limiting risk at most the Bayes risk plus epsilon for every sufficiently large L.",
+  "verification_condition": "Verify the full published covariance and initialization domains, the infinite-flow convergence dependency, the exact Bayes endpoint, and the Theorem 4.3 transfer; otherwise exit nonzero as BLOCKED.",
+  "acceptance": [
+    "The exact limit matrices attain Bayes risk pointwise for arbitrary invertible anisotropic Sigma.",
+    "The cited convergence theorem covers the full displayed alpha interval.",
+    "Theorem 4.3 assumptions hold over the full displayed Sigma domain.",
+    "The fail-closed verifier exits 2 while either universal dependency remains open.",
+    "An anisotropic wrong-matrix control is rejected."
+  ]
+}

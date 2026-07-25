@@ -1,0 +1,1 @@
+BLOCKED: Bayes-zero limit algebra is exact, but the published universal Sigma/alpha domain is not covered by the cited convergence and assumption audits.

@@ -535,8 +535,160 @@ def run_claim_4_certificate() -> dict:
     return result
 
 
+def run_claim_5_certificate() -> dict:
+    artifact = ARTIFACT_ROOT / "claim_5"
+    candidate = CANDIDATE_ROOT / "claim_5"
+    start = time.perf_counter()
+    git_sha = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    result = {
+        "claim_id": 5,
+        "git_sha": git_sha,
+        "source": {
+            "paper_url": "https://ar5iv.labs.arxiv.org/html/2512.11784",
+            "paper_retrieved_utc_date": "2026-07-25",
+            "paper_sha256": "6ae468a4032e920d159b609a78f1860bdf90004c7a692df60c601d9e3c9ff4c2",
+            "theorem_anchor": "S5.Thmtheorem1",
+            "proof_anchor": "A5.SS2",
+            "lemma_E_1_anchor": "A5.Thmtheorem1",
+            "primary_reference_url": (
+                "https://www.jmlr.org/papers/volume25/23-1042/23-1042.pdf"
+            ),
+            "primary_reference_retrieved_utc_date": "2026-07-25",
+            "primary_reference_sha256": (
+                "3612edf523d550dfc549d1d47a0294f2bd2da7642bddfa56b8d4a0fa0bd93446"
+            ),
+        },
+        "statement_scope": {
+            "model": "noiseless in-context linear regression in Equation (7)",
+            "covariance": "every invertible Sigma",
+            "initialization": (
+                "Equation (9), 0<alpha<sqrt(2)/(d^(1/4)||Sigma||_op)"
+            ),
+            "quantifiers": (
+                "for every epsilon>0 exists L(epsilon), for every L>=L(epsilon)"
+            ),
+            "conclusion": "lim_t R_L(theta_L(t)) <= R_ICL_star+epsilon",
+            "bayes_value": "R_ICL_star=0",
+        },
+        "verified_subcertificate": {
+            "limit_parameters": (
+                "U*=tr(Sigma^-2)^(-1/4) diag(Sigma^-1,0); "
+                "V*=tr(Sigma^-2)^(1/4) diag(0,...,0,1)"
+            ),
+            "block_algebra": [
+                "U*(x,0)=c^-1(Sigma^-1 x,0)",
+                "Gamma_w U*(x,0)=c^-1(x,w^T x)",
+                "V* Gamma_w U*(x,0) has last coordinate w^T x",
+            ],
+            "pointwise_squared_error": "0 for every w and x",
+            "risk": "0",
+            "bayes_optimality": (
+                "squared loss is nonnegative, so the attained zero risk is Bayes optimal"
+            ),
+        },
+        "research_routes": {
+            "route_1_compositional_proof_audit": {
+                "result": "unresolved dependencies",
+                "details": (
+                    "Theorem 5.1 invokes Theorem 4.3 via Lemma E.1, but Lemma E.1 "
+                    "assumes ||Sigma||_op<=1 while Theorem 5.1 states only invertibility."
+                ),
+            },
+            "route_2_direct_bayes_algebra": {
+                "result": "verified endpoint only",
+                "details": (
+                    "Exact block multiplication proves the advertised infinite-prompt "
+                    "limit matrices attain pointwise prediction w^T x and risk zero for "
+                    "every invertible anisotropic Sigma."
+                ),
+            },
+            "route_3_boundary_dynamics_and_condition_audit": {
+                "result": "no falsification, universal proof still open",
+                "details": (
+                    "For d=1 the exact balanced ODE x'=s^2 x(1-s x^2) converges "
+                    "to x=1/sqrt(s) for every alpha>0. But in general d the published "
+                    "alpha interval does not imply the cited JMLR sufficient condition."
+                ),
+            },
+        },
+        "dependency_gap_certificate": {
+            "paper_covariance_domain": "Sigma invertible",
+            "lemma_E_1_domain": "||Sigma||_op<=1",
+            "domain_implication_holds": False,
+            "paper_alpha_bound": "alpha<sqrt(2)/(d^(1/4)||Sigma||_op)",
+            "jmlr_theorem_4_condition": "alpha^2||Sigma||_op sqrt(d)<2 at L=infinity",
+            "condition_implication_counterexample": {
+                "d": 1,
+                "Sigma_op": "1/4",
+                "alpha": "4",
+                "paper_upper_bound": "4sqrt(2)",
+                "paper_condition_holds": True,
+                "jmlr_left_side": "4",
+                "jmlr_condition_holds": False,
+            },
+            "is_counterexample_to_theorem": False,
+            "reason": (
+                "Failure of a cited sufficient condition is a proof gap, not an "
+                "assumption-satisfying counterexample to the theorem conclusion."
+            ),
+        },
+        "verdict": "BLOCKED",
+        "confidence": "MEDIUM",
+        "unblocker": (
+            "A proof of infinite-prompt gradient-flow convergence for every invertible "
+            "Sigma and the full published alpha interval, plus an extension of the "
+            "Theorem 4.3 assumption audit beyond ||Sigma||_op<=1; alternatively, a "
+            "valid assumption-satisfying counterexample."
+        ),
+        "negative_control": {
+            "wrong_parameter_choice": "replace Sigma^-1 in U* by I for anisotropic Sigma=diag(1,2)",
+            "result": "prediction error is nonzero for generic x,w",
+            "expected_detector_exit": 1,
+        },
+        "runtime": {
+            "estimated_active_cores": 1,
+            "selected_backend": "hf",
+            "selected_flavor": "cpu-upgrade",
+            **cpu_quota(),
+        },
+    }
+    artifact.mkdir(parents=True, exist_ok=True)
+    raw = artifact / "raw_result.json"
+    raw.write_text(json.dumps(result, indent=2) + "\n")
+    verifier_output = run_checked(
+        artifact / "verify_claim_5.py", "--raw", str(raw), expected=2
+    )
+    independent_output = run_checked(artifact / "independent_check.py")
+    control_output = run_checked(artifact / "negative_control.py", expected=1)
+    (artifact / "verifier_output.txt").write_text(verifier_output)
+    (artifact / "independent_checker_output.txt").write_text(independent_output)
+    (artifact / "negative_control_output.txt").write_text(control_output)
+    result["runtime"]["certificate_wall_seconds"] = time.perf_counter() - start
+    raw.write_text(json.dumps(result, indent=2) + "\n")
+    candidate.mkdir(parents=True, exist_ok=True)
+    for path in artifact.iterdir():
+        if path.is_file():
+            shutil.copy2(path, candidate / path.name)
+    print("=== CLAIM 5 BLOCKED CERTIFICATE ===")
+    print(raw.read_text())
+    print("=== CLAIM 5 VERIFIER OUTPUT (EXPECTED EXIT 2: BLOCKED) ===")
+    print(verifier_output, end="")
+    print("=== CLAIM 5 INDEPENDENT BAYES CHECKER OUTPUT ===")
+    print(independent_output, end="")
+    print("=== CLAIM 5 NEGATIVE CONTROL OUTPUT (EXPECTED EXIT 1) ===")
+    print(control_output, end="")
+    return result
+
+
 if __name__ == "__main__":
     run_claim_1_certificate()
     run_claim_2_certificate()
     run_claim_3_certificate()
     run_claim_4_certificate()
+    run_claim_5_certificate()

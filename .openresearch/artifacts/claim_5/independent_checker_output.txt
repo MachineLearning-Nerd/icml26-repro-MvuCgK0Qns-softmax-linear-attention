@@ -1,0 +1,1 @@
+PASS independent exact Bayes algebra: pointwise error is zero in d=1,2,3 anisotropic rational cases; the indexed block derivation is dimension-free.

@@ -1,0 +1,1 @@
+EXPECTED REJECTION: replacing Sigma^-1 by I gives prediction 3, label 2, squared error 1.

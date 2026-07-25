@@ -223,6 +223,75 @@ grow afterwards; it is rejected with exit code 1. No explicit numerical
 `L(epsilon)` is claimed because the theorem and supporting constants are
 qualitative.
 
+## Claim 5 — Theorem 5.1
+
+Verdict: **BLOCKED**. Confidence: **MEDIUM**.
+
+The exact published contract quantifies over every invertible `Sigma`, every
+Equation (9) initialization with
+
+`0<alpha<sqrt(2)/(d^(1/4)||Sigma||_op)`,
+
+and every sufficiently large prompt length. It concludes that finite-softmax
+gradient-flow risk approaches the Bayes risk.
+
+The central Bayes endpoint is now proved exactly. Write
+`c=tr(Sigma^-2)^(1/4)`. The advertised limit matrices have top block
+`U*=c^-1 Sigma^-1` and bottom selector `V*=c`. For
+
+`Gamma_w=[[Sigma,Sigma w],[w^T Sigma,w^T Sigma w]]`,
+
+block multiplication gives
+
+`Gamma_w U*(x,0)=c^-1(x,w^T x)`,
+
+so `V* Gamma_w U*(x,0)` predicts `w^T x` pointwise. Its squared error and risk
+are exactly zero for every invertible anisotropic `Sigma`; nonnegative squared
+loss makes this Bayes optimal.
+
+The universal training claim remains blocked by two proof-domain gaps:
+
+1. Lemma E.1 establishes Theorem 4.3's assumptions only for
+   `||Sigma||_op<=1`, while Theorem 5.1 states only invertibility.
+2. The cited JMLR convergence theorem requires, at infinite prompt,
+   `alpha^2||Sigma||_op sqrt(d)<2`. The published alpha interval does not imply
+   this when `||Sigma||_op<1`. Exactly, `d=1`, `||Sigma||=1/4`, `alpha=4`
+   satisfies the paper's `alpha<4sqrt(2)` condition but gives cited-condition
+   left side `4`, not `<2`.
+
+This is not a theorem counterexample: it shows that the cited sufficient
+condition cannot certify the full published interval. Indeed, the independently
+derived scalar ODE `x'=s²x(1-sx²)` converges to the Bayes product for every
+`alpha>0`, so the simplest falsification route finds no contradiction.
+
+Three distinct routes are recorded: compositional proof audit, direct
+dimension-free Bayes algebra, and scalar boundary dynamics plus exact condition
+audit. The confidence is MEDIUM because the endpoint and transfer mechanism are
+exact but a material general-dimensional convergence obligation remains.
+
+- Raw result and gaps: [raw_result.json](../../evidence/claim_5/raw_result.json)
+- Contract: [claim_contract.json](../../evidence/claim_5/claim_contract.json)
+- Fail-closed BLOCKED verifier: [verify_claim_5.py](../../evidence/claim_5/verify_claim_5.py)
+- Independent Bayes checker: [independent_check.py](../../evidence/claim_5/independent_check.py)
+- Independent output: [independent_checker_output.txt](../../evidence/claim_5/independent_checker_output.txt)
+- Negative control: [negative_control.py](../../evidence/claim_5/negative_control.py)
+- Negative-control output: [negative_control_output.txt](../../evidence/claim_5/negative_control_output.txt)
+
+Verifier output (exit code 2 by design):
+
+```text
+BLOCKED: Bayes-zero limit algebra is exact, but the published universal Sigma/alpha domain is not covered by the cited convergence and assumption audits.
+```
+
+The anisotropic control replaces `Sigma^-1` by `I`; for
+`Sigma=diag(1,2)` it predicts `3` instead of label `2`, with squared error `1`,
+and is rejected with exit code 1.
+
+Unblocker: prove infinite-prompt gradient-flow convergence for every invertible
+`Sigma` and the complete displayed alpha interval, and extend the Theorem 4.3
+assumption audit beyond `||Sigma||_op<=1`; alternatively, exhibit a valid
+assumption-satisfying counterexample.
+
 ## Evaluator-visible evidence matrix — in-progress candidate
 
 | Claim | Canonical page | Code visible | Data inline | Raw link | Checker | Control | Exact claim tested | Reviewer verdict |
@@ -231,4 +300,4 @@ qualitative.
 | 2 | Current verification | Yes | Yes | Yes | Yes | Yes | Literal Proposition 3.4 and Assumption 3.3 | FALSIFIED |
 | 3 | Current verification | Yes | Yes | Yes | Yes | Yes | Lemma 2.1 operator identity, all d and PSD Gamma | VERIFIED |
 | 4 | Current verification | Yes | Yes | Yes | Yes | Yes | Full Theorem 4.3 quantifiers and assumptions | VERIFIED |
-| 5 | Pending | No | No | No | No | No | Pending | BLOCKED |
+| 5 | Current verification | Yes | Yes | Yes | Yes | Yes | Full Theorem 5.1 contract; dependency gaps explicit | BLOCKED |
