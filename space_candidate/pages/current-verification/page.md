@@ -54,12 +54,69 @@ Interpretation risk: if the authors intended an unstated `L>=2` or
 sufficiently-large-`L` restriction, this witness does not falsify that repaired
 statement. The published proposition does not state the repair.
 
+## Claim 2 — Proposition 3.4
+
+Verdict: **FALSIFIED** for the literal published statement.
+
+Source: arXiv `2512.11784`, Section 3, Proposition 3.4, HTML anchor
+`S3.Thmtheorem4`; the moment condition is Assumption 3.3 at
+`S3.Thmtheorem3`. The same source hash and retrieval record above apply.
+
+The proposition gives two bounds under Assumption 3.3:
+
+- `V`-gradient squared error at most
+  `c1 sigma^6 ln(L)/L^(c2/sigma²)`;
+- `U`-gradient squared error at most
+  `c1 sigma^12 ln(L)^2/L^(c2/sigma²)`.
+
+Neither display qualifies the positive-integer prompt length with `L>=2` or
+“sufficiently large.” Take `d=1`, `L=1`, `mu=nu=N(0,1)`, `sigma=1`, `U=0`,
+and `V=1`. A one-token attention output is `VX`, so its `V`-gradient is `X`
+and its `U`-gradient is zero. Gaussian population attention is `VUZ`, whose
+respective gradients at the witness are zero and `Z`. Therefore
+
+`V-gradient LHS = E[X²] = 1 > 0 = RHS`
+
+and
+
+`U-gradient LHS = E[Z²] = 1 > 0 = RHS`
+
+for every allowed `c1,c2>0`.
+
+This witness also satisfies every case of Assumption 3.3. At `U=0`, the
+exponential tilt is one; for `p,q in {0,4,8}`, choose
+`M_pq=E|X|^p E|Z|^q`. The required moments are exactly `1,3,105`, so all nine
+bounds are finite and hold with equality.
+
+- Raw result: [raw_result.json](../../evidence/claim_2/raw_result.json)
+- Contract: [claim_contract.json](../../evidence/claim_2/claim_contract.json)
+- Executable verifier: [verify_claim_2.py](../../evidence/claim_2/verify_claim_2.py)
+- Independent checker: [independent_check.py](../../evidence/claim_2/independent_check.py)
+- Independent output: [independent_checker_output.txt](../../evidence/claim_2/independent_checker_output.txt)
+- Negative control: [negative_control.py](../../evidence/claim_2/negative_control.py)
+- Negative-control output: [negative_control_output.txt](../../evidence/claim_2/negative_control_output.txt)
+
+Primary verifier output:
+
+```text
+PASS: Assumption 3.3 holds; exact V- and U-gradient errors each have LHS=1 > RHS=0 for every c1,c2>0.
+```
+
+The independent reconstruction imports no reproduction code and checks all
+nine moment products using exact integer arithmetic. The valid
+`mu=nu=delta_0` control has zero gradient errors and is rejected with the
+intended exit code 1.
+
+Interpretation risk: an unstated `L>=2` or sufficiently-large-`L` restriction
+would repair this boundary defect; this certificate tests the proposition as
+published.
+
 ## Evaluator-visible evidence matrix — in-progress candidate
 
 | Claim | Canonical page | Code visible | Data inline | Raw link | Checker | Control | Exact claim tested | Reviewer verdict |
 |---|---|---|---|---|---|---|---|---|
 | 1 | Current verification | Yes | Yes | Yes | Yes | Yes | Literal Proposition 3.1 | FALSIFIED |
-| 2 | Pending | No | No | No | No | No | Pending | BLOCKED |
+| 2 | Current verification | Yes | Yes | Yes | Yes | Yes | Literal Proposition 3.4 and Assumption 3.3 | FALSIFIED |
 | 3 | Pending | No | No | No | No | No | Pending | BLOCKED |
 | 4 | Pending | No | No | No | No | No | Pending | BLOCKED |
 | 5 | Pending | No | No | No | No | No | Pending | BLOCKED |

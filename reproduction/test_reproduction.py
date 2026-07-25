@@ -123,6 +123,47 @@ class ReproductionTests(unittest.TestCase):
         self.assertEqual(independent.returncode, 0, independent.stdout + independent.stderr)
         self.assertEqual(control.returncode, 1, control.stdout + control.stderr)
 
+    def test_claim_2_exact_falsification_is_fail_closed(self):
+        artifact = ROOT / ".openresearch" / "artifacts" / "claim_2"
+        raw = artifact / "raw_result.json"
+        verifier = artifact / "verify_claim_2.py"
+        accepted = subprocess.run(
+            [sys.executable, str(verifier), "--raw", str(raw)],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(accepted.returncode, 0, accepted.stdout + accepted.stderr)
+        with tempfile.TemporaryDirectory() as directory:
+            tampered = Path(directory) / "tampered.json"
+            payload = json.loads(raw.read_text())
+            payload["exact_calculation"]["U_lhs_exact"] = "0"
+            tampered.write_text(json.dumps(payload))
+            rejected = subprocess.run(
+                [sys.executable, str(verifier), "--raw", str(tampered)],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+            )
+        self.assertNotEqual(rejected.returncode, 0)
+
+    def test_claim_2_independent_checker_and_negative_control(self):
+        artifact = ROOT / ".openresearch" / "artifacts" / "claim_2"
+        independent = subprocess.run(
+            [sys.executable, str(artifact / "independent_check.py")],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        control = subprocess.run(
+            [sys.executable, str(artifact / "negative_control.py")],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(independent.returncode, 0, independent.stdout + independent.stderr)
+        self.assertEqual(control.returncode, 1, control.stdout + control.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

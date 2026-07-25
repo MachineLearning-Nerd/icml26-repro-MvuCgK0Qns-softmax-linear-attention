@@ -1,0 +1,16 @@
+{
+  "claim_id": 2,
+  "paper_anchor": "Section 3, Proposition 3.4, HTML id S3.Thmtheorem4",
+  "assumption_anchor": "Section 3, Assumption 3.3, HTML id S3.Thmtheorem3",
+  "verdict_target": "FALSIFIED",
+  "literal_contract": "Under Assumption 3.3, the two displayed expected squared gradient errors obey their stated positive-constant bounds for every positive integer L admitted by the unqualified displays.",
+  "falsification_condition": "Exhibit one assumption-satisfying instance and one admitted L for which each gradient-error left side is positive while its right side is zero for all permitted constants.",
+  "witness": "d=1; L=1; mu=nu=N(0,1); sigma=1; U=0; V=1",
+  "acceptance": [
+    "All published sub-Gaussian and Assumption 3.3 moment conditions are true.",
+    "The exact V-gradient error equals 1 while its bound equals 0.",
+    "The exact U-gradient error equals 1 while its bound equals 0.",
+    "An independent checker reconstructs the gradient and moment calculations.",
+    "The valid delta_0 control is rejected as a counterexample."
+  ]
+}

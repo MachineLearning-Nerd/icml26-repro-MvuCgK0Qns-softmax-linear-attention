@@ -1,0 +1,1 @@
+PASS: Assumption 3.3 holds; exact V- and U-gradient errors each have LHS=1 > RHS=0 for every c1,c2>0.

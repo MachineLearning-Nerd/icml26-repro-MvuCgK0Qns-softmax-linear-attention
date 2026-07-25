@@ -22,9 +22,9 @@ import scipy
 from numpy.polynomial.hermite import hermgauss
 
 if __package__:
-    from .exact_claims import run_claim_1_certificate
+    from .exact_claims import run_claim_1_certificate, run_claim_2_certificate
 else:
-    from exact_claims import run_claim_1_certificate
+    from exact_claims import run_claim_1_certificate, run_claim_2_certificate
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -269,6 +269,7 @@ def main() -> None:
     args = parser.parse_args(); out = args.output_dir.resolve(); out.mkdir(parents=True, exist_ok=True)
     start = time.perf_counter()
     exact_claim_1 = run_claim_1_certificate()
+    exact_claim_2 = run_claim_2_certificate()
     quad, control = quadrature_certificate()
     raw, aggregate = concentration_experiment(); rates = fit_rates(aggregate)
     trajectory = trajectory_stability(); bayes, trained = optimization_transfer()
@@ -297,7 +298,7 @@ def main() -> None:
         "paper": {"openreview": "MvuCgK0Qns", "arxiv": "2512.11784"},
         "git_sha": git_sha,
         "fixed_run_command": "uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py",
-        "exact_claims": {"claim_1": exact_claim_1},
+        "exact_claims": {"claim_1": exact_claim_1, "claim_2": exact_claim_2},
         "claim_1": {"verdict": "historical_toy", "quadrature_cases": len(quad),
                     "max_quadrature_abs_error": float(quad.max_abs_error.max()),
                     "rademacher_negative_control": control,
@@ -321,7 +322,7 @@ def main() -> None:
     (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     pd.DataFrame([
         {"claim": 1, "verdict": "falsified", "evidence": "Literal Proposition 3.1 has exact L=1 Gaussian witness with LHS=1 and RHS=0; see .openresearch/artifacts/claim_1."},
-        {"claim": 2, "verdict": "historical_toy", "evidence": f"{summary['claim_2']['query_metric_comparisons']:,} output/Jacobian comparisons; slopes {summary['claim_2']['rate_slope_min']:.3f} to {summary['claim_2']['rate_slope_max']:.3f}; all trajectory checks improve."},
+        {"claim": 2, "verdict": "falsified", "evidence": "Literal Proposition 3.4 has exact L=1 Gaussian witnesses for both V and U gradients, each with LHS=1 and RHS=0; see .openresearch/artifacts/claim_2."},
         {"claim": 3, "verdict": "historical_toy", "evidence": f"{len(trained)} trained models plus exact Bayes matrices; long-prompt finite risks and parameter errors fall in every covariance."},
     ]).to_csv(out / "claim_evidence.csv", index=False)
     audited = [

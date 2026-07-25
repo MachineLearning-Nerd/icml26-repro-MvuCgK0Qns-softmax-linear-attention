@@ -1,0 +1,49 @@
+{
+  "claim_id": 2,
+  "source": {
+    "url": "https://ar5iv.labs.arxiv.org/html/2512.11784",
+    "retrieved_utc_date": "2026-07-25",
+    "sha256": "6ae468a4032e920d159b609a78f1860bdf90004c7a692df60c601d9e3c9ff4c2",
+    "proposition_anchor": "S3.Thmtheorem4",
+    "assumption_anchor": "S3.Thmtheorem3"
+  },
+  "witness": {
+    "d": 1,
+    "L": 1,
+    "mu": "N(0,1)",
+    "nu": "N(0,1)",
+    "sigma": 1,
+    "U": 0,
+    "V": 1
+  },
+  "assumptions": {
+    "mu_centered_sigma_subgaussian": true,
+    "nu_centered_1_subgaussian": true,
+    "sigma_at_least_1": true,
+    "assumption_3_3_all_nine_moment_bounds_finite": true,
+    "iid_empirical_prompt": true
+  },
+  "assumption_3_3_audit": {
+    "orders": [0, 4, 8],
+    "absolute_gaussian_moments": {"0": 1, "4": 3, "8": 105},
+    "chosen_finite_bounds_at_U_0": {
+      "M_0_0": 1,
+      "M_0_4": 3,
+      "M_0_8": 105,
+      "M_4_0": 3,
+      "M_4_4": 9,
+      "M_4_8": 315,
+      "M_8_0": 105,
+      "M_8_4": 315,
+      "M_8_8": 11025
+    }
+  },
+  "exact_calculation": {
+    "V_lhs_exact": "1",
+    "V_rhs_exact_for_all_positive_c1_c2": "0",
+    "U_lhs_exact": "1",
+    "U_rhs_exact_for_all_positive_c1_c2": "0",
+    "both_strict_contradictions": true
+  },
+  "verdict": "FALSIFIED"
+}

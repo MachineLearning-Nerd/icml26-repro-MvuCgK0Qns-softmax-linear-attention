@@ -11,8 +11,8 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-ARTIFACT = ROOT / ".openresearch" / "artifacts" / "claim_1"
-CANDIDATE = ROOT / "space_candidate" / "evidence" / "claim_1"
+ARTIFACT_ROOT = ROOT / ".openresearch" / "artifacts"
+CANDIDATE_ROOT = ROOT / "space_candidate" / "evidence"
 
 
 def cpu_quota() -> dict[str, int | float | str | None]:
@@ -42,6 +42,8 @@ def run_checked(script: Path, *args: str, expected: int = 0) -> str:
 
 
 def run_claim_1_certificate() -> dict:
+    artifact = ARTIFACT_ROOT / "claim_1"
+    candidate = CANDIDATE_ROOT / "claim_1"
     start = time.perf_counter()
     git_sha = subprocess.run(
         ["git", "rev-parse", "HEAD"],
@@ -112,22 +114,22 @@ def run_claim_1_certificate() -> dict:
             **cpu_quota(),
         },
     }
-    ARTIFACT.mkdir(parents=True, exist_ok=True)
-    raw = ARTIFACT / "raw_result.json"
+    artifact.mkdir(parents=True, exist_ok=True)
+    raw = artifact / "raw_result.json"
     raw.write_text(json.dumps(result, indent=2) + "\n")
-    verifier_output = run_checked(ARTIFACT / "verify_claim_1.py", "--raw", str(raw))
-    independent_output = run_checked(ARTIFACT / "independent_check.py")
-    control_output = run_checked(ARTIFACT / "negative_control.py", expected=1)
-    (ARTIFACT / "verifier_output.txt").write_text(verifier_output)
-    (ARTIFACT / "independent_checker_output.txt").write_text(independent_output)
-    (ARTIFACT / "negative_control_output.txt").write_text(control_output)
+    verifier_output = run_checked(artifact / "verify_claim_1.py", "--raw", str(raw))
+    independent_output = run_checked(artifact / "independent_check.py")
+    control_output = run_checked(artifact / "negative_control.py", expected=1)
+    (artifact / "verifier_output.txt").write_text(verifier_output)
+    (artifact / "independent_checker_output.txt").write_text(independent_output)
+    (artifact / "negative_control_output.txt").write_text(control_output)
     result["runtime"]["certificate_wall_seconds"] = time.perf_counter() - start
     raw.write_text(json.dumps(result, indent=2) + "\n")
 
-    CANDIDATE.mkdir(parents=True, exist_ok=True)
-    for path in ARTIFACT.iterdir():
+    candidate.mkdir(parents=True, exist_ok=True)
+    for path in artifact.iterdir():
         if path.is_file():
-            shutil.copy2(path, CANDIDATE / path.name)
+            shutil.copy2(path, candidate / path.name)
 
     print("=== EXACT CLAIM 1 CERTIFICATE ===")
     print(raw.read_text())
@@ -140,5 +142,135 @@ def run_claim_1_certificate() -> dict:
     return result
 
 
+def run_claim_2_certificate() -> dict:
+    artifact = ARTIFACT_ROOT / "claim_2"
+    candidate = CANDIDATE_ROOT / "claim_2"
+    start = time.perf_counter()
+    git_sha = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    moments = {"0": 1, "4": 3, "8": 105}
+    moment_bounds = {
+        f"M_{p}_{q}": moments[str(p)] * moments[str(q)]
+        for p in (0, 4, 8)
+        for q in (0, 4, 8)
+    }
+    result = {
+        "claim_id": 2,
+        "git_sha": git_sha,
+        "source": {
+            "url": "https://ar5iv.labs.arxiv.org/html/2512.11784",
+            "retrieved_utc_date": "2026-07-25",
+            "sha256": "6ae468a4032e920d159b609a78f1860bdf90004c7a692df60c601d9e3c9ff4c2",
+            "proposition_anchor": "S3.Thmtheorem4",
+            "assumption_anchor": "S3.Thmtheorem3",
+        },
+        "statement_scope": {
+            "literal_prompt_domain": "positive integer L; no lower-bound qualifier appears",
+            "V_bound": (
+                "E[||grad_V T[mu_hat_L]-grad_V T[mu]||^2_L2(nu)] "
+                "<= c1*sigma^6*ln(L)/L^(c2/sigma^2)"
+            ),
+            "U_bound": (
+                "E[||grad_U T[mu_hat_L]-grad_U T[mu]||^2_L2(nu)] "
+                "<= c1*sigma^12*ln(L)^2/L^(c2/sigma^2)"
+            ),
+            "constants": "there exist c1,c2>0 depending only on d,U,V",
+        },
+        "witness": {
+            "d": 1,
+            "L": 1,
+            "mu": "N(0,1)",
+            "nu": "N(0,1)",
+            "sigma": 1,
+            "U": 0,
+            "V": 1,
+        },
+        "assumptions": {
+            "mu_centered_sigma_subgaussian": True,
+            "nu_centered_1_subgaussian": True,
+            "sigma_at_least_1": True,
+            "assumption_3_3_all_nine_moment_bounds_finite": True,
+            "iid_empirical_prompt": True,
+        },
+        "assumption_3_3_audit": {
+            "orders": [0, 4, 8],
+            "absolute_gaussian_moments": moments,
+            "chosen_finite_bounds_at_U_0": moment_bounds,
+            "derivation": (
+                "At U=0 the exponential tilt is 1, so the left side is "
+                "E|X|^p E|Z|^q. With sigma=1, choosing M_pq equal to that "
+                "finite product satisfies every p,q bound with equality."
+            ),
+        },
+        "exact_calculation": {
+            "finite_V_gradient_L1": "X",
+            "population_V_gradient_at_U0": "0",
+            "V_lhs": "E[X^2] = 1",
+            "V_lhs_exact": "1",
+            "V_rhs_exact_for_all_positive_c1_c2": "0",
+            "finite_U_gradient_L1": "0",
+            "population_U_gradient_at_U0_V1": "Z",
+            "U_lhs": "E[Z^2] = 1",
+            "U_lhs_exact": "1",
+            "U_rhs_exact_for_all_positive_c1_c2": "0",
+            "both_strict_contradictions": True,
+        },
+        "verdict": "FALSIFIED",
+        "interpretation_risk": (
+            "The certificate contradicts the literal displayed proposition. "
+            "If an unstated restriction L>=2 or sufficiently large L was intended, "
+            "that repaired statement is not falsified by this witness."
+        ),
+        "negative_control": {
+            "mu": "delta_0",
+            "nu": "delta_0",
+            "L": 1,
+            "V_lhs_exact": "0",
+            "U_lhs_exact": "0",
+            "both_rhs_exact": "0",
+            "strict_contradiction": False,
+            "expected_detector_exit": 1,
+        },
+        "runtime": {
+            "estimated_active_cores": 1,
+            "selected_backend": "hf",
+            "selected_flavor": "cpu-upgrade",
+            **cpu_quota(),
+        },
+    }
+    artifact.mkdir(parents=True, exist_ok=True)
+    raw = artifact / "raw_result.json"
+    raw.write_text(json.dumps(result, indent=2) + "\n")
+    verifier_output = run_checked(artifact / "verify_claim_2.py", "--raw", str(raw))
+    independent_output = run_checked(artifact / "independent_check.py")
+    control_output = run_checked(artifact / "negative_control.py", expected=1)
+    (artifact / "verifier_output.txt").write_text(verifier_output)
+    (artifact / "independent_checker_output.txt").write_text(independent_output)
+    (artifact / "negative_control_output.txt").write_text(control_output)
+    result["runtime"]["certificate_wall_seconds"] = time.perf_counter() - start
+    raw.write_text(json.dumps(result, indent=2) + "\n")
+
+    candidate.mkdir(parents=True, exist_ok=True)
+    for path in artifact.iterdir():
+        if path.is_file():
+            shutil.copy2(path, candidate / path.name)
+
+    print("=== EXACT CLAIM 2 CERTIFICATE ===")
+    print(raw.read_text())
+    print("=== CLAIM 2 VERIFIER OUTPUT ===")
+    print(verifier_output, end="")
+    print("=== CLAIM 2 INDEPENDENT CHECKER OUTPUT ===")
+    print(independent_output, end="")
+    print("=== CLAIM 2 NEGATIVE CONTROL OUTPUT (EXPECTED EXIT 1) ===")
+    print(control_output, end="")
+    return result
+
+
 if __name__ == "__main__":
     run_claim_1_certificate()
+    run_claim_2_certificate()
