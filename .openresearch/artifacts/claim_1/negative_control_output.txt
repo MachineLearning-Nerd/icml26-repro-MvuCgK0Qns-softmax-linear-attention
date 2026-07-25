@@ -1,0 +1,1 @@
+EXPECTED REJECTION: delta_0 gives LHS=RHS=0, so no strict contradiction exists.

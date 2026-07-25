@@ -1,0 +1,8 @@
+{
+  "claim_id": 1,
+  "paper_anchor": "Section 3, Proposition 3.1, HTML id S3.Thmtheorem1",
+  "verdict_target": "FALSIFIED",
+  "literal_contract": "For the stated assumptions and every positive integer L admitted by the unqualified display, there exist c1,c2>0 such that E[||T[mu_hat_L]-T[mu]||^2] <= c1 sigma^6 ln(L)/L^(c2/sigma^2).",
+  "falsification_condition": "Exhibit one assumption-satisfying instance and one admitted L for which the left side is positive and the right side is zero for all permitted constants.",
+  "witness": "d=1; L=1; mu=nu=N(0,1); sigma=1; K=0; Q=V=M=1"
+}

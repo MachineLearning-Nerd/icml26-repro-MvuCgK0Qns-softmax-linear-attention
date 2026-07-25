@@ -1,0 +1,1 @@
+PASS: assumptions hold; exact LHS=1 > RHS=0 for every c1,c2>0.

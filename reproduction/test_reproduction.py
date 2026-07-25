@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -78,6 +81,47 @@ class ReproductionTests(unittest.TestCase):
                     "summary.json", "source_manifest.json"}
         self.assertTrue(expected.issubset({p.name for p in OUT.iterdir()}))
         self.assertTrue(self.s["compute"]["cpu_only"]); self.assertFalse(self.s["compute"]["gpu_used"])
+
+    def test_claim_1_exact_falsification_is_fail_closed(self):
+        artifact = ROOT / ".openresearch" / "artifacts" / "claim_1"
+        raw = artifact / "raw_result.json"
+        verifier = artifact / "verify_claim_1.py"
+        accepted = subprocess.run(
+            [sys.executable, str(verifier), "--raw", str(raw)],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(accepted.returncode, 0, accepted.stdout + accepted.stderr)
+        with tempfile.TemporaryDirectory() as directory:
+            tampered = Path(directory) / "tampered.json"
+            payload = json.loads(raw.read_text())
+            payload["exact_calculation"]["lhs_exact"] = "0"
+            tampered.write_text(json.dumps(payload))
+            rejected = subprocess.run(
+                [sys.executable, str(verifier), "--raw", str(tampered)],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+            )
+        self.assertNotEqual(rejected.returncode, 0)
+
+    def test_claim_1_independent_checker_and_negative_control(self):
+        artifact = ROOT / ".openresearch" / "artifacts" / "claim_1"
+        independent = subprocess.run(
+            [sys.executable, str(artifact / "independent_check.py")],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        control = subprocess.run(
+            [sys.executable, str(artifact / "negative_control.py")],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(independent.returncode, 0, independent.stdout + independent.stderr)
+        self.assertEqual(control.returncode, 1, control.stdout + control.stderr)
 
 
 if __name__ == "__main__":

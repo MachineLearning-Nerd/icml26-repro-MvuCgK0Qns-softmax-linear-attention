@@ -21,6 +21,8 @@ import pandas as pd
 import scipy
 from numpy.polynomial.hermite import hermgauss
 
+from reproduction.exact_claims import run_claim_1_certificate
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -263,6 +265,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(); parser.add_argument("--output-dir", type=Path, default=ROOT / "outputs" / "full")
     args = parser.parse_args(); out = args.output_dir.resolve(); out.mkdir(parents=True, exist_ok=True)
     start = time.perf_counter()
+    exact_claim_1 = run_claim_1_certificate()
     quad, control = quadrature_certificate()
     raw, aggregate = concentration_experiment(); rates = fit_rates(aggregate)
     trajectory = trajectory_stability(); bayes, trained = optimization_transfer()
@@ -291,16 +294,17 @@ def main() -> None:
         "paper": {"openreview": "MvuCgK0Qns", "arxiv": "2512.11784"},
         "git_sha": git_sha,
         "fixed_run_command": "uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py",
-        "claim_1": {"verdict": "verified", "quadrature_cases": len(quad),
+        "exact_claims": {"claim_1": exact_claim_1},
+        "claim_1": {"verdict": "historical_toy", "quadrature_cases": len(quad),
                     "max_quadrature_abs_error": float(quad.max_abs_error.max()),
                     "rademacher_negative_control": control,
                     "finite_output_reductions": {r.regime: r.reduction_16_to_1024 for r in rates.itertuples() if r.metric == "output_mse"}},
-        "claim_2": {"verdict": "verified", "query_metric_comparisons": int(len(raw) * 3),
+        "claim_2": {"verdict": "historical_toy", "query_metric_comparisons": int(len(raw) * 3),
                     "rate_slope_min": float(rates.slope.min()), "rate_slope_max": float(rates.slope.max()),
                     "rate_r_squared_min": float(rates.r_squared.min()),
                     "trajectory_checkpoints": len(trajectory),
                     "long_prompt_gradient_wins": int((trajectory.gradient_mse_L1024 < trajectory.gradient_mse_L16).sum())},
-        "claim_3": {"verdict": "verified", "trained_models": len(trained),
+        "claim_3": {"verdict": "historical_toy", "trained_models": len(trained),
                     "trained_reductions": reductions, "bayes_risk_reductions": bayes_reductions,
                     "max_bayes_operator_identity_error": float(bayes.operator_identity_max_error.max()),
                     "max_infinite_bayes_risk": float(bayes.infinite_risk.max())},
@@ -313,11 +317,21 @@ def main() -> None:
     }
     (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     pd.DataFrame([
-        {"claim": 1, "verdict": "verified", "evidence": f"48 Gauss-Hermite cases; max error {summary['claim_1']['max_quadrature_abs_error']:.2e}; Gaussian-only negative control."},
-        {"claim": 2, "verdict": "verified", "evidence": f"{summary['claim_2']['query_metric_comparisons']:,} output/Jacobian comparisons; slopes {summary['claim_2']['rate_slope_min']:.3f} to {summary['claim_2']['rate_slope_max']:.3f}; all trajectory checks improve."},
-        {"claim": 3, "verdict": "verified", "evidence": f"{len(trained)} trained models plus exact Bayes matrices; long-prompt finite risks and parameter errors fall in every covariance."},
+        {"claim": 1, "verdict": "falsified", "evidence": "Literal Proposition 3.1 has exact L=1 Gaussian witness with LHS=1 and RHS=0; see .openresearch/artifacts/claim_1."},
+        {"claim": 2, "verdict": "historical_toy", "evidence": f"{summary['claim_2']['query_metric_comparisons']:,} output/Jacobian comparisons; slopes {summary['claim_2']['rate_slope_min']:.3f} to {summary['claim_2']['rate_slope_max']:.3f}; all trajectory checks improve."},
+        {"claim": 3, "verdict": "historical_toy", "evidence": f"{len(trained)} trained models plus exact Bayes matrices; long-prompt finite risks and parameter errors fall in every covariance."},
     ]).to_csv(out / "claim_evidence.csv", index=False)
-    audited = [ROOT / "paper.pdf", ROOT / "claims.json", *sorted((ROOT / "reproduction").glob("*")), *out.glob("*")]
+    audited = [
+        ROOT / "paper.pdf",
+        ROOT / "claims.json",
+        *sorted((ROOT / "reproduction").glob("*")),
+        *sorted(
+            path
+            for path in (ROOT / ".openresearch" / "artifacts").rglob("*")
+            if "__pycache__" not in path.parts
+        ),
+        *out.glob("*"),
+    ]
     manifest = {str(p.relative_to(ROOT)): {"sha256": sha256(p), "bytes": p.stat().st_size}
                 for p in sorted(set(audited)) if p.is_file() and p.name != "source_manifest.json"}
     manifest["official_code"] = {"repository": "https://github.com/eboursier/softmax_as_linear.git",

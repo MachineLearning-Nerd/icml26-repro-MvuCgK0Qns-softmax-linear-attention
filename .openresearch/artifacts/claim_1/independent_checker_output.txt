@@ -1,0 +1,1 @@
+PASS independent reconstruction: Gaussian moment LHS=1; ln(1) makes RHS=0.
