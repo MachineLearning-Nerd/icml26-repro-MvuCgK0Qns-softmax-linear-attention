@@ -6,11 +6,11 @@ Jacobian concentration, gradient stability along an optimization path, and
 transfer to the exact linear-limit solution across three covariance families.
 
 ```bash
-uv venv --python 3.12
-uv pip install --python .venv/bin/python -r reproduction/requirements-cpu.txt
-.venv/bin/python reproduction/reproduce.py --output-dir outputs/full
-.venv/bin/python -m unittest -v reproduction/test_reproduction.py
+uv sync --frozen
+uv run python reproduction/reproduce.py --output-dir outputs/full
+uv run python -m unittest -v reproduction/test_reproduction.py
 ```
 
+`pyproject.toml` and `uv.lock` define the sole repository-level `.venv`.
 The experiment is CPU-only and imports no official module. All raw comparisons,
 trained-model rows, source pins, limitations, and tests are retained.

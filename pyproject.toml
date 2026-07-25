@@ -1,0 +1,15 @@
+[project]
+name = "softmax-linear-attention-reproduction"
+version = "0.1.0"
+description = "CPU-only reproduction of arXiv 2512.11784"
+requires-python = "==3.12.*"
+dependencies = [
+    "matplotlib==3.11.0",
+    "numpy==2.3.5",
+    "pandas==3.0.3",
+    "scipy==1.17.1",
+    "trackio==0.25.1",
+]
+
+[tool.uv]
+package = false

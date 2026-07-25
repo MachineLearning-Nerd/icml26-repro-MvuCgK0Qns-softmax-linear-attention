@@ -6,7 +6,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import platform
+import subprocess
 import time
 from itertools import product
 from pathlib import Path
@@ -277,8 +279,18 @@ def main() -> None:
                               "parameter_distance_reduction_L16_to_L1024": float(g.iloc[0].distance / g.iloc[-1].distance)}
     bayes_reductions = {regime: float(g.iloc[0].finite_softmax_risk / g.iloc[-1].finite_softmax_risk)
                         for regime, g in bayes.groupby("regime")}
+    git_sha = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    affinity_cpus = len(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else None
     summary = {
         "paper": {"openreview": "MvuCgK0Qns", "arxiv": "2512.11784"},
+        "git_sha": git_sha,
+        "fixed_run_command": "uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py",
         "claim_1": {"verdict": "verified", "quadrature_cases": len(quad),
                     "max_quadrature_abs_error": float(quad.max_abs_error.max()),
                     "rademacher_negative_control": control,
@@ -293,6 +305,9 @@ def main() -> None:
                     "max_bayes_operator_identity_error": float(bayes.operator_identity_max_error.max()),
                     "max_infinite_bayes_risk": float(bayes.infinite_risk.max())},
         "compute": {"wall_seconds": time.perf_counter() - start, "cpu_only": True, "gpu_used": False,
+                    "estimated_active_cores": 1, "selected_backend": "hf",
+                    "selected_flavor": "cpu-upgrade", "allocated_vcpus": os.cpu_count(),
+                    "affinity_cpus": affinity_cpus,
                     "python": platform.python_version(), "numpy": np.__version__, "scipy": scipy.__version__,
                     "platform": platform.platform()},
     }
