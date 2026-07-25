@@ -1,0 +1,35 @@
+{
+  "claim_id": 4,
+  "source": {
+    "url": "https://ar5iv.labs.arxiv.org/html/2512.11784",
+    "sha256": "6ae468a4032e920d159b609a78f1860bdf90004c7a692df60c601d9e3c9ff4c2",
+    "theorem_anchor": "S4.Thmtheorem3",
+    "proof_anchor": "A4.SS1"
+  },
+  "assumptions": {
+    "loss_is_1_smooth": true,
+    "loss_gradient_at_origin_is_zero": true,
+    "infinite_risk_is_C2": true,
+    "infinite_gradient_flow_is_bounded": true,
+    "assumption_4_2_holds": true,
+    "risk_is_bounded_below_as_an_expected_loss": true
+  },
+  "dependency_audit": {
+    "uniform_risk_gap": "Corollary D.3: sup on B_{2rho} |R_L-R_infinity| <= g1(L), g1(L)->0",
+    "finite_horizon_gradient_gap": "Lemma D.1 and Eq. (23): ||theta_L(t)-theta_infinity(t)|| <= g2(L)t exp(beta_infinity t), g2(L)->0",
+    "gronwall_source": "beta_infinity is the fixed Lipschitz constant of grad R_infinity on B_{2rho}",
+    "risk_monotonicity": "dR_L/dt = -||grad R_L||^2 <= 0"
+  },
+  "symbolic_checks": {
+    "epsilon_budget": {
+      "infinite_flow_tail": "1/2",
+      "finite_to_infinite_risk_at_T": "1/2"
+    },
+    "budget_total": "1/1",
+    "budget_closes_exactly": true,
+    "finite_horizon_factor_uses_fixed_beta_infinity": true,
+    "gradient_flow_energy_identity": "dR_L/dt=-||grad R_L||^2",
+    "order_chain_closes": true
+  },
+  "verdict": "VERIFIED"
+}

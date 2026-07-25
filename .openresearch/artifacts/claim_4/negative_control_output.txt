@@ -1,0 +1,1 @@
+EXPECTED REJECTION: R_L(T)=0 but R_L(10)=9 when monotonicity is removed; finite-horizon closeness alone does not imply the limiting-risk bound.

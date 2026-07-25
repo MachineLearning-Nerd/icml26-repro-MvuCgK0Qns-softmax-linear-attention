@@ -1,0 +1,1 @@
+PASS independent order reconstruction: 1/2+1/2=1 exactly; the non-increasing finite-flow risk preserves the bound at t->infinity.

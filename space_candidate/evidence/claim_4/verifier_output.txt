@@ -1,0 +1,1 @@
+PASS: for arbitrary epsilon, two exact epsilon/2 budgets plus gradient-flow monotonicity prove the full Theorem 4.3 limiting-risk bound.

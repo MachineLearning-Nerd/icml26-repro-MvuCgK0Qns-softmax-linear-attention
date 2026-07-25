@@ -26,12 +26,14 @@ if __package__:
         run_claim_1_certificate,
         run_claim_2_certificate,
         run_claim_3_certificate,
+        run_claim_4_certificate,
     )
 else:
     from exact_claims import (
         run_claim_1_certificate,
         run_claim_2_certificate,
         run_claim_3_certificate,
+        run_claim_4_certificate,
     )
 
 
@@ -279,6 +281,7 @@ def main() -> None:
     exact_claim_1 = run_claim_1_certificate()
     exact_claim_2 = run_claim_2_certificate()
     exact_claim_3 = run_claim_3_certificate()
+    exact_claim_4 = run_claim_4_certificate()
     quad, control = quadrature_certificate()
     raw, aggregate = concentration_experiment(); rates = fit_rates(aggregate)
     trajectory = trajectory_stability(); bayes, trained = optimization_transfer()
@@ -311,6 +314,7 @@ def main() -> None:
             "claim_1": exact_claim_1,
             "claim_2": exact_claim_2,
             "claim_3": exact_claim_3,
+            "claim_4": exact_claim_4,
         },
         "claim_1": {"verdict": "historical_toy", "quadrature_cases": len(quad),
                     "max_quadrature_abs_error": float(quad.max_abs_error.max()),
@@ -337,6 +341,7 @@ def main() -> None:
         {"claim": 1, "verdict": "falsified", "evidence": "Literal Proposition 3.1 has exact L=1 Gaussian witness with LHS=1 and RHS=0; see .openresearch/artifacts/claim_1."},
         {"claim": 2, "verdict": "falsified", "evidence": "Literal Proposition 3.4 has exact L=1 Gaussian witnesses for both V and U gradients, each with LHS=1 and RHS=0; see .openresearch/artifacts/claim_2."},
         {"claim": 3, "verdict": "verified", "evidence": "Dimension-free Gaussian MGF proof certificate establishes Lemma 2.1 for arbitrary d and PSD covariance; see .openresearch/artifacts/claim_3."},
+        {"claim": 4, "verdict": "verified", "evidence": "Machine-checked epsilon-transfer proof reconstructs Theorem 4.3 from uniform risk/gradient convergence and gradient-flow monotonicity; see .openresearch/artifacts/claim_4."},
     ]).to_csv(out / "claim_evidence.csv", index=False)
     audited = [
         ROOT / "paper.pdf",

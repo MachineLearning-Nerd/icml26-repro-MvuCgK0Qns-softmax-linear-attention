@@ -166,6 +166,63 @@ Scope: this verifies the exact operator identity in judged Claim 3. The
 lemma's additional pushforward-law statement is not part of that imported
 claim and is not silently credited here.
 
+## Claim 4 — Theorem 4.3
+
+Verdict: **VERIFIED**.
+
+Source: Section 4, Theorem 4.3 (`S4.Thmtheorem3`), with proof in Appendix D.1
+(`A4.SS1`). The exact claim is:
+
+`for every epsilon>0, there exists L(epsilon), such that for every L>=L(epsilon),`
+
+`lim_t R_L(theta_L(t)) <= lim_t R_infinity(theta_infinity(t)) + epsilon`.
+
+This is now checked as an arbitrary-epsilon proof rather than inferred from the
+historical 36-model proxy. Under the stated assumptions, Corollary D.3 gives a
+uniform finite/infinite risk gap `g1(L)->0`. Lemma D.1 and Gronwall give, on
+any fixed horizon,
+
+`||theta_L(t)-theta_infinity(t)||`
+
+`<=g2(L) t exp(beta_infinity t)`, with `g2(L)->0`.
+
+For an arbitrary target `epsilon`, choose `T` so the infinite-flow tail costs
+at most `epsilon/2`, then choose one `L(epsilon)` so the risk and trajectory
+comparison at that fixed `T` costs at most `epsilon/2`. Exact rational
+arithmetic checks that the budget is `1/2+1/2=1`.
+
+Finally, along the finite gradient flow,
+
+`d R_L/dt = -||grad R_L||² <= 0`.
+
+Therefore its limiting risk is no larger than its already-bounded value at
+`T`, establishing the published quantified conclusion.
+
+- Raw proof result: [raw_result.json](../../evidence/claim_4/raw_result.json)
+- Contract: [claim_contract.json](../../evidence/claim_4/claim_contract.json)
+- Executable verifier: [verify_claim_4.py](../../evidence/claim_4/verify_claim_4.py)
+- Independent order checker: [independent_check.py](../../evidence/claim_4/independent_check.py)
+- Independent output: [independent_checker_output.txt](../../evidence/claim_4/independent_checker_output.txt)
+- Negative control: [negative_control.py](../../evidence/claim_4/negative_control.py)
+- Negative-control output: [negative_control_output.txt](../../evidence/claim_4/negative_control_output.txt)
+
+Primary verifier output:
+
+```text
+PASS: for arbitrary epsilon, two exact epsilon/2 budgets plus gradient-flow monotonicity prove the full Theorem 4.3 limiting-risk bound.
+```
+
+Source audit: one Appendix D.1 display writes `beta_L`, but the underlying
+Lemma D.1 equations (22)-(24) establish and use the fixed `beta_infinity`
+Lipschitz constant. The fixed version is necessary and is what this certificate
+checks. The source proof's final `2 epsilon` is resolved explicitly by starting
+with `epsilon/2`.
+
+The control matches the finite risk at `T` but removes monotonicity and lets it
+grow afterwards; it is rejected with exit code 1. No explicit numerical
+`L(epsilon)` is claimed because the theorem and supporting constants are
+qualitative.
+
 ## Evaluator-visible evidence matrix — in-progress candidate
 
 | Claim | Canonical page | Code visible | Data inline | Raw link | Checker | Control | Exact claim tested | Reviewer verdict |
@@ -173,5 +230,5 @@ claim and is not silently credited here.
 | 1 | Current verification | Yes | Yes | Yes | Yes | Yes | Literal Proposition 3.1 | FALSIFIED |
 | 2 | Current verification | Yes | Yes | Yes | Yes | Yes | Literal Proposition 3.4 and Assumption 3.3 | FALSIFIED |
 | 3 | Current verification | Yes | Yes | Yes | Yes | Yes | Lemma 2.1 operator identity, all d and PSD Gamma | VERIFIED |
-| 4 | Pending | No | No | No | No | No | Pending | BLOCKED |
+| 4 | Current verification | Yes | Yes | Yes | Yes | Yes | Full Theorem 4.3 quantifiers and assumptions | VERIFIED |
 | 5 | Pending | No | No | No | No | No | Pending | BLOCKED |

@@ -1,0 +1,16 @@
+{
+  "claim_id": 4,
+  "paper_anchor": "Section 4, Theorem 4.3, HTML id S4.Thmtheorem3",
+  "proof_anchor": "Appendix D.1, HTML id A4.SS1",
+  "verdict_target": "VERIFIED",
+  "literal_contract": "Under every stated assumption, for every epsilon>0 there exists L(epsilon) such that every L>=L(epsilon) has limiting finite-prompt gradient-flow risk no larger than the limiting infinite-prompt risk plus epsilon.",
+  "verification_condition": "Machine-check the arbitrary-epsilon order chain from uniform risk convergence, finite-horizon trajectory convergence, and monotonic gradient-flow risk, including every quantifier and the source proof's epsilon relabeling.",
+  "acceptance": [
+    "All theorem assumptions and supporting lemma contracts are audited.",
+    "The Gronwall factor uses the fixed beta_infinity established in Lemma D.1.",
+    "The two epsilon/2 error budgets sum exactly to epsilon.",
+    "Gradient flow supplies the exact risk monotonicity identity.",
+    "An independent order-chain checker agrees.",
+    "A control without monotonicity is rejected."
+  ]
+}
