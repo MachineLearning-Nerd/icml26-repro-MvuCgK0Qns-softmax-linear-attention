@@ -21,7 +21,10 @@ import pandas as pd
 import scipy
 from numpy.polynomial.hermite import hermgauss
 
-from reproduction.exact_claims import run_claim_1_certificate
+if __package__:
+    from .exact_claims import run_claim_1_certificate
+else:
+    from exact_claims import run_claim_1_certificate
 
 
 ROOT = Path(__file__).resolve().parents[1]
