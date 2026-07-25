@@ -20,6 +20,10 @@ The strongest supported forecast is `9/10`, not a judge result. Claims 1 and 2
 have a material interpretation risk: an unstated `L≥2` repair would evade the
 boundary witnesses. Claim 5 is not promoted beyond its evidence.
 
+- [Published Hugging Face Space](https://huggingface.co/spaces/DineshAI/MvuCgK0Qns)
+  at revision
+  [`29699a404594b1b4f4e0e0028e09f5b3e13cbffa`](https://huggingface.co/spaces/DineshAI/MvuCgK0Qns/commit/29699a404594b1b4f4e0e0028e09f5b3e13cbffa)
+  — awaiting a new live judge verdict
 - [Illustrated claim-by-claim report](reports/claim-by-claim/report.md)
 - [Evidence-first marimo tutorial](notebooks/softmax_linear_attention.py)
 - [Current evaluator-visible verification](space_candidate/pages/current-verification/page.md)
@@ -56,6 +60,7 @@ Every formal node inherited the same command verbatim:
 | [`orx/lemma-2-1-dimension-free-proof-certificate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/lemma-2-1-dimension-free-proof-certificate) | Replace finite quadrature with a dimension-free proof | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | VERIFIED; cumulative tests pass | HF `cpu-upgrade`, 8-vCPU quota, 48 s |
 | [`orx/theorem-4-3-epsilon-transfer-proof-certificate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/theorem-4-3-epsilon-transfer-proof-certificate) | Reconstruct the full arbitrary-`ε` risk-transfer proof | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | VERIFIED; cumulative tests pass | HF `cpu-upgrade`, 8-vCPU quota, 47 s |
 | [`orx/theorem-5-1-bayes-certificate-and-dependency-aud`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/theorem-5-1-bayes-certificate-and-dependency-aud) | Prove the Bayes endpoint and audit the universal training dependencies | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | Endpoint exact; full theorem BLOCKED; 18/18 tests | HF `cpu-upgrade`, 8-vCPU quota, 47 s |
+| [`orx/evaluator-visible-release-candidate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/evaluator-visible-release-candidate) | Add the report, notebook, full Space union, manifests, and blind-review gate | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | 19/19 tests; release audit passes | HF `cpu-upgrade`, 8-vCPU quota, 53 s |
 | `master` | Publication surface for the report, notebook, and exact published text | Not run as an experiment (publication surface) | Mirrors the winning cumulative evidence | No experiment compute |
 
 ## Reproduce

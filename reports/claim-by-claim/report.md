@@ -172,13 +172,13 @@ All formal experiments used Hugging Face `cpu-upgrade` and the image
 Host affinity exposed 64 logical CPUs, which is not reported as the
 allocation.
 
-Six successful cumulative runs took `49,48,48,48,47,47` seconds (287 seconds
-total). Two environmental setup runs failed in `11` and `21` seconds before
-producing scientific results. At the published `$0.03/hour` flavor price and
-one-minute billing granularity, the estimated campaign compute charge is
-`8 × $0.0005 = $0.0040`; the six successful evidence runs account for
-`$0.0030`. Local work was limited to single-core, sub-five-minute inspection,
-rendering, and verifier checks.
+Seven successful cumulative runs took `49,48,48,48,47,47,53` seconds (340
+seconds total). Two environmental setup runs failed in `11` and `21` seconds
+before producing scientific results. At the published `$0.03/hour` flavor
+price and one-minute billing granularity, the estimated campaign compute
+charge is `9 × $0.0005 = $0.0045`; the seven successful evidence/release runs
+account for `$0.0035`. Local work was limited to single-core, sub-five-minute
+inspection, rendering, and verifier checks.
 
 The environment is exactly Python `3.12.*` with `uv.lock`; the formal run
 reported Python `3.12.12`, NumPy `2.3.5`, and SciPy `1.17.1`.
@@ -193,11 +193,14 @@ Best-supported possible total score: **9/10 forecast**
 
 Claims 1–4 changed from toy-only evidence to exact current certificates.
 Claim 5 remains BLOCKED because the universal training domain is not covered,
-although its Bayes endpoint is exact. The publication action is a text-only
-API commit to the existing `DineshAI/MvuCgK0Qns` Space, followed by an exact
-revision download, hash check, canonical-entrypoint traversal, and a mirror
-of the published text paths to GitHub `master`. No second Space is created,
-and no score increase is claimed before a new live verdict.
+although its Bayes endpoint is exact. The completed publication action was a
+78-path text-only API commit to the existing `DineshAI/MvuCgK0Qns` Space at
+revision `29699a404594b1b4f4e0e0028e09f5b3e13cbffa`. A fresh exact-revision
+download matched all 78 upload hashes and all 95 expected candidate hashes;
+the post-publication blind traversal opened 83 files with no missing
+conclusion. The published text is mirrored under `space_candidate/` on GitHub
+`master`. No second Space was created, and no score increase is claimed before
+a new live verdict.
 
 ## Experiment lineage
 
@@ -207,9 +210,17 @@ and no score increase is claimed before a new live verdict.
 - [Lemma 2.1 dimension-free certificate](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/lemma-2-1-dimension-free-proof-certificate)
 - [Theorem 4.3 transfer certificate](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/theorem-4-3-epsilon-transfer-proof-certificate)
 - [Theorem 5.1 Bayes and dependency audit](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/theorem-5-1-bayes-certificate-and-dependency-aud)
+- [Evaluator-visible release candidate](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/evaluator-visible-release-candidate)
 
 The exact machine-readable evidence and executable verifiers are under
 `space_candidate/evidence/claim_1` through `claim_5`. The candidate’s current
 verification page contains the evaluator-visible matrix and links to every
 contract, raw result, checker, control, source audit, method, environment
 record, and limitation.
+
+Release audits: [first blind review](audits/blind-review-round-1.md) ·
+[passing second review](audits/blind-review-round-2.md) ·
+[post-publication review](audits/blind-review-round-4-postpublish.md) ·
+[historical subset check](audits/old-new-subset-check.md) ·
+[exact upload allowlist](audits/upload-allowlist.txt) ·
+[command ledger](audits/command-ledger.md).
