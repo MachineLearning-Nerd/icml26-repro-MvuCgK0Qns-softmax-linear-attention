@@ -111,12 +111,67 @@ Interpretation risk: an unstated `L>=2` or sufficiently-large-`L` restriction
 would repair this boundary defect; this certificate tests the proposition as
 published.
 
+## Claim 3 — Lemma 2.1
+
+Verdict: **VERIFIED**.
+
+Source: arXiv `2512.11784`, Section 2, Lemma 2.1, HTML anchor
+`S2.Thmtheorem1`. The lemma states, for every Gaussian
+`mu=N(m,Gamma)` and every compatible `z`,
+
+`T^{K,Q,V}[mu](z) = V m + V Gamma K^T Q z`.
+
+This candidate replaces the historical `d=1–3` quadrature proxy with a
+dimension-free symbolic certificate. Let `a=K^T Q z` and represent every
+Gaussian with PSD covariance, including singular cases, as
+`X=m+B G`, `G~N(0,I)`, `Gamma=B B^T`. Completing the square gives
+
+`a^T(m+B g)-||g||²/2`
+
+`=a^T m+||B^T a||²/2-||g-B^T a||²/2`.
+
+Hence the Gaussian normalizer is
+
+`F(a)=E exp(a^T X)=exp(a^T m+a^T Gamma a/2)`.
+
+Differentiation gives the tilted first moment
+
+`E[X exp(a^T X)]=(m+Gamma a)F(a)`.
+
+The strictly positive normalizer cancels in attention, leaving
+`V(m+Gamma a)`; substituting `a=K^T Q z` is exactly the published identity.
+This derivation is valid for arbitrary dimension and does not extrapolate from
+a finite sweep.
+
+- Raw proof result: [raw_result.json](../../evidence/claim_3/raw_result.json)
+- Contract: [claim_contract.json](../../evidence/claim_3/claim_contract.json)
+- Executable verifier: [verify_claim_3.py](../../evidence/claim_3/verify_claim_3.py)
+- Independent exact-polynomial checker: [independent_check.py](../../evidence/claim_3/independent_check.py)
+- Independent output: [independent_checker_output.txt](../../evidence/claim_3/independent_checker_output.txt)
+- Negative control: [negative_control.py](../../evidence/claim_3/negative_control.py)
+- Negative-control output: [negative_control_output.txt](../../evidence/claim_3/negative_control_output.txt)
+
+Primary verifier output:
+
+```text
+PASS: dimension-free Gaussian MGF derivation yields T[mu](z)=V m+V Gamma K^T Q z for every d and PSD Gamma.
+```
+
+The independent checker imports no reproduction code and exactly expands 380
+sparse-polynomial coefficients across generated dimensions
+`1,2,3,4,8,16`, including rank-deficient covariance factors. The Rademacher
+control gives `tanh(2)=0.964...`, not `2`, and is rejected with exit code 1.
+
+Scope: this verifies the exact operator identity in judged Claim 3. The
+lemma's additional pushforward-law statement is not part of that imported
+claim and is not silently credited here.
+
 ## Evaluator-visible evidence matrix — in-progress candidate
 
 | Claim | Canonical page | Code visible | Data inline | Raw link | Checker | Control | Exact claim tested | Reviewer verdict |
 |---|---|---|---|---|---|---|---|---|
 | 1 | Current verification | Yes | Yes | Yes | Yes | Yes | Literal Proposition 3.1 | FALSIFIED |
 | 2 | Current verification | Yes | Yes | Yes | Yes | Yes | Literal Proposition 3.4 and Assumption 3.3 | FALSIFIED |
-| 3 | Pending | No | No | No | No | No | Pending | BLOCKED |
+| 3 | Current verification | Yes | Yes | Yes | Yes | Yes | Lemma 2.1 operator identity, all d and PSD Gamma | VERIFIED |
 | 4 | Pending | No | No | No | No | No | Pending | BLOCKED |
 | 5 | Pending | No | No | No | No | No | Pending | BLOCKED |

@@ -1,0 +1,1 @@
+PASS: dimension-free Gaussian MGF derivation yields T[mu](z)=V m+V Gamma K^T Q z for every d and PSD Gamma.

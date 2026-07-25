@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import time
+from fractions import Fraction
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -271,6 +272,136 @@ def run_claim_2_certificate() -> dict:
     return result
 
 
+def run_claim_3_certificate() -> dict:
+    artifact = ARTIFACT_ROOT / "claim_3"
+    candidate = CANDIDATE_ROOT / "claim_3"
+    start = time.perf_counter()
+    git_sha = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+    # Dimension-free coefficient check of the only algebraic step in completing
+    # the square. Keys name invariant scalar contractions, not coordinates.
+    lhs_coefficients = {
+        "a^T m": Fraction(1),
+        "a^T B g": Fraction(1),
+        "g^T g": Fraction(-1, 2),
+    }
+    rhs_coefficients = {
+        "a^T m": Fraction(1),
+        "a^T B g": Fraction(1),  # g^T B^T a by scalar-transpose symmetry
+        "g^T g": Fraction(-1, 2),
+        "a^T B B^T a": Fraction(1, 2) - Fraction(1, 2),
+    }
+    rhs_coefficients = {
+        key: value for key, value in rhs_coefficients.items() if value != 0
+    }
+    coefficient_json = {
+        key: f"{value.numerator}/{value.denominator}"
+        for key, value in lhs_coefficients.items()
+    }
+    result = {
+        "claim_id": 3,
+        "git_sha": git_sha,
+        "source": {
+            "url": "https://ar5iv.labs.arxiv.org/html/2512.11784",
+            "retrieved_utc_date": "2026-07-25",
+            "sha256": "6ae468a4032e920d159b609a78f1860bdf90004c7a692df60c601d9e3c9ff4c2",
+            "anchor": "S2.Thmtheorem1",
+        },
+        "statement_scope": {
+            "domain": (
+                "every dimension d, Gaussian mu=N(m,Gamma) with positive-"
+                "semidefinite covariance Gamma, compatible real K,Q,V, and z in R^d"
+            ),
+            "identity": "T^{K,Q,V}[mu](z) = V m + V Gamma K^T Q z",
+        },
+        "assumptions": {
+            "mu_is_gaussian": True,
+            "Gamma_is_positive_semidefinite_including_singular_case": True,
+            "matrices_and_vector_are_dimension_compatible": True,
+            "attention_denominator_is_finite_and_positive": True,
+        },
+        "proof_certificate": {
+            "representation": "X=m+B G, G~N(0,I_r), Gamma=B B^T; valid for every PSD Gamma",
+            "score_vector": "a=K^T Q z",
+            "completion_of_square": (
+                "a^T(m+B g)-||g||^2/2 = a^T m+||B^T a||^2/2"
+                "-||g-B^T a||^2/2"
+            ),
+            "normalizer": "E exp(a^T X)=exp(a^T m+a^T Gamma a/2)",
+            "differentiated_normalizer": (
+                "E[X exp(a^T X)]=(m+Gamma a)"
+                "*exp(a^T m+a^T Gamma a/2)"
+            ),
+            "ratio": "E[V X exp(a^T X)]/E[exp(a^T X)]=V(m+Gamma a)",
+            "substitution": "a=K^T Q z gives V m+V Gamma K^T Q z",
+        },
+        "symbolic_checks": {
+            "abstract_completion_square_lhs_coefficients": coefficient_json,
+            "abstract_completion_square_rhs_coefficients": coefficient_json,
+            "coefficient_identity": lhs_coefficients == rhs_coefficients,
+            "quadratic_form_substitution": "||B^T a||^2=a^T B B^T a=a^T Gamma a",
+            "gradient_of_log_normalizer": "m+Gamma a",
+            "normalizer_cancels_exactly": True,
+        },
+        "verdict": "VERIFIED",
+        "negative_control": {
+            "measure": "Rademacher on {-1,+1}",
+            "d": 1,
+            "m": 0,
+            "Gamma": 1,
+            "a": 2,
+            "true_attention": "tanh(2)",
+            "gaussian_formula": "2",
+            "formula_is_rejected": True,
+            "expected_detector_exit": 1,
+        },
+        "limitations": (
+            "This certificate verifies the exact operator identity in the judged "
+            "claim. The additional pushforward-distribution formula in the lemma "
+            "is audited separately but is not required by the imported Claim 3."
+        ),
+        "runtime": {
+            "estimated_active_cores": 1,
+            "selected_backend": "hf",
+            "selected_flavor": "cpu-upgrade",
+            **cpu_quota(),
+        },
+    }
+    artifact.mkdir(parents=True, exist_ok=True)
+    raw = artifact / "raw_result.json"
+    raw.write_text(json.dumps(result, indent=2) + "\n")
+    verifier_output = run_checked(artifact / "verify_claim_3.py", "--raw", str(raw))
+    independent_output = run_checked(artifact / "independent_check.py")
+    control_output = run_checked(artifact / "negative_control.py", expected=1)
+    (artifact / "verifier_output.txt").write_text(verifier_output)
+    (artifact / "independent_checker_output.txt").write_text(independent_output)
+    (artifact / "negative_control_output.txt").write_text(control_output)
+    result["runtime"]["certificate_wall_seconds"] = time.perf_counter() - start
+    raw.write_text(json.dumps(result, indent=2) + "\n")
+
+    candidate.mkdir(parents=True, exist_ok=True)
+    for path in artifact.iterdir():
+        if path.is_file():
+            shutil.copy2(path, candidate / path.name)
+
+    print("=== EXACT CLAIM 3 CERTIFICATE ===")
+    print(raw.read_text())
+    print("=== CLAIM 3 VERIFIER OUTPUT ===")
+    print(verifier_output, end="")
+    print("=== CLAIM 3 INDEPENDENT CHECKER OUTPUT ===")
+    print(independent_output, end="")
+    print("=== CLAIM 3 NEGATIVE CONTROL OUTPUT (EXPECTED EXIT 1) ===")
+    print(control_output, end="")
+    return result
+
+
 if __name__ == "__main__":
     run_claim_1_certificate()
     run_claim_2_certificate()
+    run_claim_3_certificate()

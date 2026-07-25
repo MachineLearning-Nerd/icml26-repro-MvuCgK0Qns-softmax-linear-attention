@@ -1,0 +1,1 @@
+EXPECTED REJECTION: Rademacher attention tanh(2)=0.9640275800758169, not the Gaussian affine prediction 2.

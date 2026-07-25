@@ -1,0 +1,1 @@
+PASS independent exact-polynomial reconstruction: completion of square matched in d=1,2,3,4,8,16 across 380 coefficients, including singular covariances.

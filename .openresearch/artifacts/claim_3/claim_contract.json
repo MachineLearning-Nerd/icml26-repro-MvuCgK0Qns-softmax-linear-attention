@@ -1,0 +1,15 @@
+{
+  "claim_id": 3,
+  "paper_anchor": "Section 2, Lemma 2.1, HTML id S2.Thmtheorem1",
+  "verdict_target": "VERIFIED",
+  "literal_contract": "For every dimension d, Gaussian measure N(m,Gamma), compatible K,Q,V, and z in R^d, the infinite-prompt attention operator equals V m + V Gamma K^T Q z.",
+  "verification_condition": "Provide a machine-checked, dimension-free symbolic derivation that covers every positive-semidefinite Gamma, including singular covariance, plus an independent algebraic reconstruction and a non-Gaussian control.",
+  "acceptance": [
+    "The Gaussian representation X=m+B G covers every PSD Gamma through Gamma=B B^T.",
+    "The exponential tilt is completed to a shifted standard Gaussian exactly.",
+    "Differentiating the finite Gaussian normalizer gives the exact tilted first moment.",
+    "The denominator cancels exactly and substitution yields the published identity.",
+    "An independent exact-polynomial checker agrees for generated dimensions.",
+    "A Rademacher control rejects the Gaussian-only formula."
+  ]
+}
