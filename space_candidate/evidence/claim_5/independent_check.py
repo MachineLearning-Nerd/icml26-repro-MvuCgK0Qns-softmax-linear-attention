@@ -27,6 +27,7 @@ for diagonal, w, x in cases:
     label = sum((w[i] * x[i] for i in range(d)), F(0))
     assert prediction == label
     assert (prediction - label) ** 2 == 0
+
 print(
     "PASS independent exact Bayes algebra: pointwise error is zero in "
     "d=1,2,3 anisotropic rational cases; the indexed block derivation is dimension-free."

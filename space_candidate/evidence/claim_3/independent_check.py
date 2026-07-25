@@ -27,10 +27,13 @@ def scale(polynomial: Polynomial, factor: Fraction) -> Polynomial:
 
 def product(left: Polynomial, right: Polynomial) -> Polynomial:
     result: Polynomial = {}
-    for lm, lc in left.items():
-        for rm, rc in right.items():
-            monomial = tuple(sorted(lm + rm))
-            result[monomial] = result.get(monomial, Fraction(0)) + lc * rc
+    for left_monomial, left_coefficient in left.items():
+        for right_monomial, right_coefficient in right.items():
+            monomial = tuple(sorted(left_monomial + right_monomial))
+            result[monomial] = (
+                result.get(monomial, Fraction(0))
+                + left_coefficient * right_coefficient
+            )
     return {monomial: coefficient for monomial, coefficient in result.items() if coefficient}
 
 
@@ -51,6 +54,7 @@ def mat_t_vec(matrix: list[list[Polynomial]], vector: list[Polynomial]) -> list[
 
 checks = 0
 for d in (1, 2, 3, 4, 8, 16):
+    # Rectangular B with r<d for d>1 explicitly covers singular Gamma.
     rank = 1 if d == 1 else max(1, d - 1)
     a = [variable(f"a{i}") for i in range(d)]
     m = [variable(f"m{i}") for i in range(d)]
@@ -61,6 +65,7 @@ for d in (1, 2, 3, 4, 8, 16):
         add(*(product(b[i][j], g[j]) for j in range(rank)))
         for i in range(d)
     ]
+
     lhs = add(dot(a, m), dot(a, b_g), scale(dot(g, g), Fraction(-1, 2)))
     shifted = [add(g[j], scale(b_t_a[j], Fraction(-1))) for j in range(rank)]
     rhs = add(
@@ -70,6 +75,7 @@ for d in (1, 2, 3, 4, 8, 16):
     )
     assert lhs == rhs
     checks += len(set(lhs) | set(rhs))
+
 print(
     "PASS independent exact-polynomial reconstruction: "
     f"completion of square matched in d=1,2,3,4,8,16 across {checks} coefficients, "

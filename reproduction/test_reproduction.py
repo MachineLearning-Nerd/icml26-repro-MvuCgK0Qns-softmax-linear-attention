@@ -287,6 +287,21 @@ class ReproductionTests(unittest.TestCase):
         self.assertEqual(independent.returncode, 0, independent.stdout + independent.stderr)
         self.assertEqual(control.returncode, 1, control.stdout + control.stderr)
 
+    def test_evaluator_visible_release_surface(self):
+        audit = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "reproduction" / "audit_release.py"),
+                "--candidate",
+                str(ROOT / "space_candidate"),
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(audit.returncode, 0, audit.stdout + audit.stderr)
+        self.assertIn("PASS release audit", audit.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

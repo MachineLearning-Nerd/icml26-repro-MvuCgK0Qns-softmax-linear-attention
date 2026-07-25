@@ -2,7 +2,7 @@
 
 This is the current verifier. It supersedes the verifier at judged Space
 revision `2f4196b0ec25bad9979ac21e92543168c33090a9`, whose pages are preserved as
-**Historical rejected baseline**.
+[**Historical rejected baseline**](../historical-rejected-baseline/page.md).
 
 ## Claim 1 — Proposition 3.1
 
@@ -28,11 +28,21 @@ Every assumption holds and `T[mu]=0`. A one-token empirical prompt contains
 for every allowed `c1,c2>0`. This is an exact quantified contradiction, not a
 toy-scale extrapolation.
 
-Raw result: [raw_result.json](../../evidence/claim_1/raw_result.json)  
-Contract: [claim_contract.json](../../evidence/claim_1/claim_contract.json)  
-Executable verifier: [verify_claim_1.py](../../evidence/claim_1/verify_claim_1.py)  
-Independent checker output: [independent_checker_output.txt](../../evidence/claim_1/independent_checker_output.txt)  
-Negative-control output: [negative_control_output.txt](../../evidence/claim_1/negative_control_output.txt)
+- Raw result: [raw_result.json](../../evidence/claim_1/raw_result.json)
+- Contract: [claim_contract.json](../../evidence/claim_1/claim_contract.json)
+- Executable verifier: [verify_claim_1.py](../../evidence/claim_1/verify_claim_1.py)
+- Verifier output: [verifier_output.txt](../../evidence/claim_1/verifier_output.txt)
+- Independent checker: [independent_check.py](../../evidence/claim_1/independent_check.py)
+- Independent checker output: [independent_checker_output.txt](../../evidence/claim_1/independent_checker_output.txt)
+- Negative control: [negative_control.py](../../evidence/claim_1/negative_control.py)
+- Negative-control output: [negative_control_output.txt](../../evidence/claim_1/negative_control_output.txt)
+
+Audit packet: [source](../../evidence/claim_1/source_audit.md) ·
+[method](../../evidence/claim_1/method.md) ·
+[fixed command](../../evidence/claim_1/command.txt) ·
+[environment/CPU](../../evidence/claim_1/environment.md) ·
+[limitations](../../evidence/claim_1/limitations.md) ·
+[evaluation record](../../evidence/claim_1/EVAL.md)
 
 Primary verifier output:
 
@@ -91,10 +101,17 @@ bounds are finite and hold with equality.
 - Raw result: [raw_result.json](../../evidence/claim_2/raw_result.json)
 - Contract: [claim_contract.json](../../evidence/claim_2/claim_contract.json)
 - Executable verifier: [verify_claim_2.py](../../evidence/claim_2/verify_claim_2.py)
+- Verifier output: [verifier_output.txt](../../evidence/claim_2/verifier_output.txt)
 - Independent checker: [independent_check.py](../../evidence/claim_2/independent_check.py)
 - Independent output: [independent_checker_output.txt](../../evidence/claim_2/independent_checker_output.txt)
 - Negative control: [negative_control.py](../../evidence/claim_2/negative_control.py)
 - Negative-control output: [negative_control_output.txt](../../evidence/claim_2/negative_control_output.txt)
+- Source audit: [source_audit.md](../../evidence/claim_2/source_audit.md)
+- Method: [method.md](../../evidence/claim_2/method.md)
+- Fixed command: [command.txt](../../evidence/claim_2/command.txt)
+- Environment and CPU: [environment.md](../../evidence/claim_2/environment.md)
+- Limitations: [limitations.md](../../evidence/claim_2/limitations.md)
+- Evaluation record: [EVAL.md](../../evidence/claim_2/EVAL.md)
 
 Primary verifier output:
 
@@ -146,10 +163,17 @@ a finite sweep.
 - Raw proof result: [raw_result.json](../../evidence/claim_3/raw_result.json)
 - Contract: [claim_contract.json](../../evidence/claim_3/claim_contract.json)
 - Executable verifier: [verify_claim_3.py](../../evidence/claim_3/verify_claim_3.py)
+- Verifier output: [verifier_output.txt](../../evidence/claim_3/verifier_output.txt)
 - Independent exact-polynomial checker: [independent_check.py](../../evidence/claim_3/independent_check.py)
 - Independent output: [independent_checker_output.txt](../../evidence/claim_3/independent_checker_output.txt)
 - Negative control: [negative_control.py](../../evidence/claim_3/negative_control.py)
 - Negative-control output: [negative_control_output.txt](../../evidence/claim_3/negative_control_output.txt)
+- Source audit: [source_audit.md](../../evidence/claim_3/source_audit.md)
+- Method: [method.md](../../evidence/claim_3/method.md)
+- Fixed command: [command.txt](../../evidence/claim_3/command.txt)
+- Environment and CPU: [environment.md](../../evidence/claim_3/environment.md)
+- Limitations: [limitations.md](../../evidence/claim_3/limitations.md)
+- Evaluation record: [EVAL.md](../../evidence/claim_3/EVAL.md)
 
 Primary verifier output:
 
@@ -201,10 +225,17 @@ Therefore its limiting risk is no larger than its already-bounded value at
 - Raw proof result: [raw_result.json](../../evidence/claim_4/raw_result.json)
 - Contract: [claim_contract.json](../../evidence/claim_4/claim_contract.json)
 - Executable verifier: [verify_claim_4.py](../../evidence/claim_4/verify_claim_4.py)
+- Verifier output: [verifier_output.txt](../../evidence/claim_4/verifier_output.txt)
 - Independent order checker: [independent_check.py](../../evidence/claim_4/independent_check.py)
 - Independent output: [independent_checker_output.txt](../../evidence/claim_4/independent_checker_output.txt)
 - Negative control: [negative_control.py](../../evidence/claim_4/negative_control.py)
 - Negative-control output: [negative_control_output.txt](../../evidence/claim_4/negative_control_output.txt)
+- Source audit: [source_audit.md](../../evidence/claim_4/source_audit.md)
+- Method: [method.md](../../evidence/claim_4/method.md)
+- Fixed command: [command.txt](../../evidence/claim_4/command.txt)
+- Environment and CPU: [environment.md](../../evidence/claim_4/environment.md)
+- Limitations: [limitations.md](../../evidence/claim_4/limitations.md)
+- Evaluation record: [EVAL.md](../../evidence/claim_4/EVAL.md)
 
 Primary verifier output:
 
@@ -272,10 +303,17 @@ exact but a material general-dimensional convergence obligation remains.
 - Raw result and gaps: [raw_result.json](../../evidence/claim_5/raw_result.json)
 - Contract: [claim_contract.json](../../evidence/claim_5/claim_contract.json)
 - Fail-closed BLOCKED verifier: [verify_claim_5.py](../../evidence/claim_5/verify_claim_5.py)
+- Verifier output: [verifier_output.txt](../../evidence/claim_5/verifier_output.txt)
 - Independent Bayes checker: [independent_check.py](../../evidence/claim_5/independent_check.py)
 - Independent output: [independent_checker_output.txt](../../evidence/claim_5/independent_checker_output.txt)
 - Negative control: [negative_control.py](../../evidence/claim_5/negative_control.py)
 - Negative-control output: [negative_control_output.txt](../../evidence/claim_5/negative_control_output.txt)
+- Source audit: [source_audit.md](../../evidence/claim_5/source_audit.md)
+- Method and three routes: [method.md](../../evidence/claim_5/method.md)
+- Fixed command: [command.txt](../../evidence/claim_5/command.txt)
+- Environment and CPU: [environment.md](../../evidence/claim_5/environment.md)
+- Limitations and unblocker: [limitations.md](../../evidence/claim_5/limitations.md)
+- Evaluation record: [EVAL.md](../../evidence/claim_5/EVAL.md)
 
 Verifier output (exit code 2 by design):
 
@@ -292,7 +330,24 @@ Unblocker: prove infinite-prompt gradient-flow convergence for every invertible
 assumption audit beyond `||Sigma||_op<=1`; alternatively, exhibit a valid
 assumption-satisfying counterexample.
 
-## Evaluator-visible evidence matrix — in-progress candidate
+## Fixed command, environment, and cumulative result
+
+Every experiment inherited this command unchanged:
+
+```text
+uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py
+```
+
+The sole repository `.venv` is defined by Python `3.12.*`, `pyproject.toml`,
+and `uv.lock`. The final cumulative scientific run used Git SHA
+`ab03d8e28985c00899253218175049cb32eb0077`, deterministic numerical seeds
+`0,1,2`, and passed 18/18 tests. It ran on Hugging Face `cpu-upgrade` in 47
+seconds. The flavor advertises 8 vCPUs/32 GB; Linux
+`cpu.max="800000 100000"` confirms the actual schedulable quota was 8.0 CPUs.
+Each exact certificate records its own sub-second verifier runtime. No GPU was
+used.
+
+## Evaluator-visible evidence matrix
 
 | Claim | Canonical page | Code visible | Data inline | Raw link | Checker | Control | Exact claim tested | Reviewer verdict |
 |---|---|---|---|---|---|---|---|---|

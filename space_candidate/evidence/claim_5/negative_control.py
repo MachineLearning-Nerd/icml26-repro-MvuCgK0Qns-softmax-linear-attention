@@ -6,6 +6,8 @@ from fractions import Fraction as F
 sigma = [F(1), F(2)]
 w = [F(1), F(1)]
 x = [F(1), F(1)]
+# Wrong U top block is I rather than Sigma^-1. The bottom prediction becomes
+# w^T Sigma x = 3 instead of w^T x = 2.
 prediction = sum(w[i] * sigma[i] * x[i] for i in range(2))
 label = sum(w[i] * x[i] for i in range(2))
 error = (prediction - label) ** 2

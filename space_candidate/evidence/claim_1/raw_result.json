@@ -1,10 +1,33 @@
 {
   "claim_id": 1,
-  "source_sha256": "6ae468a4032e920d159b609a78f1860bdf90004c7a692df60c601d9e3c9ff4c2",
-  "witness": "d=1; L=1; mu=nu=N(0,1); sigma=1; K=0; Q=V=M=1",
-  "assumptions_satisfied": true,
-  "lhs_exact": "1",
-  "rhs_exact_for_all_positive_c1_c2": "0",
-  "strict_contradiction": true,
+  "source": {
+    "url": "https://ar5iv.labs.arxiv.org/html/2512.11784",
+    "retrieved_utc_date": "2026-07-25",
+    "sha256": "6ae468a4032e920d159b609a78f1860bdf90004c7a692df60c601d9e3c9ff4c2",
+    "anchor": "S3.Thmtheorem1"
+  },
+  "witness": {
+    "d": 1,
+    "L": 1,
+    "mu": "N(0,1)",
+    "nu": "N(0,1)",
+    "sigma": 1,
+    "K": 0,
+    "Q": 1,
+    "V": 1,
+    "M": 1
+  },
+  "assumptions": {
+    "mu_centered_sigma_subgaussian": true,
+    "nu_centered_1_subgaussian": true,
+    "sigma_at_least_1": true,
+    "infinite_attention_L4_at_most_sigma2_M": true,
+    "iid_empirical_prompt": true
+  },
+  "exact_calculation": {
+    "lhs_exact": "1",
+    "rhs_exact_for_all_positive_c1_c2": "0",
+    "strict_contradiction": true
+  },
   "verdict": "FALSIFIED"
 }

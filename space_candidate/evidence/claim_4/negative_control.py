@@ -3,7 +3,7 @@
 
 comparison_time = 1
 risk_at_comparison = 0
-risk_later = 10 - comparison_time
+risk_later = 10 - comparison_time  # R_L(t)=t-T for t>T, evaluated at t=10
 if risk_later <= risk_at_comparison:
     print("UNEXPECTED: non-monotone control was accepted")
     raise SystemExit(0)

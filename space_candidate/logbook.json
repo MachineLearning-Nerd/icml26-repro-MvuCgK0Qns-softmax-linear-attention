@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "title": "Repro - Softmax as Linear Attention",
+  "emoji": "🎯",
+  "space_id": "DineshAI/MvuCgK0Qns",
+  "paper": {
+    "arxiv_id": "2512.11784"
+  },
+  "tags": [
+    "icml2026-repro",
+    "paper-MvuCgK0Qns"
+  ],
+  "updated_at": "2026-07-25T00:00:00+00:00",
+  "root": {
+    "slug": "index",
+    "title": "Repro - Softmax as Linear Attention",
+    "file": "pages/index.md",
+    "children": [
+      {
+        "slug": "current-verification",
+        "title": "Current exact verification",
+        "file": "pages/current-verification/page.md",
+        "children": []
+      },
+      {
+        "slug": "historical-rejected-baseline",
+        "title": "Historical rejected baseline",
+        "file": "pages/historical-rejected-baseline/page.md",
+        "children": [
+          {
+            "slug": "00-scored-evidence-summary",
+            "title": "00 - Scored evidence summary",
+            "file": "pages/00-scored-evidence-summary/page.md",
+            "children": []
+          },
+          {
+            "slug": "claim-1-gaussian-affine-limit",
+            "title": "Claim 1 - Gaussian affine limit",
+            "file": "pages/claim-1-gaussian-affine-limit/page.md",
+            "children": []
+          },
+          {
+            "slug": "claim-2-concentration-and-gradient-stability",
+            "title": "Claim 2 - Concentration and gradient stability",
+            "file": "pages/claim-2-concentration-and-gradient-stability/page.md",
+            "children": []
+          },
+          {
+            "slug": "claim-3-optimization-transfer",
+            "title": "Claim 3 - Optimization transfer",
+            "file": "pages/claim-3-optimization-transfer/page.md",
+            "children": []
+          },
+          {
+            "slug": "methods-tests-and-provenance",
+            "title": "Methods, tests, and provenance",
+            "file": "pages/methods-tests-and-provenance/page.md",
+            "children": []
+          },
+          {
+            "slug": "limitations-and-negative-controls",
+            "title": "Limitations and negative controls",
+            "file": "pages/limitations-and-negative-controls/page.md",
+            "children": []
+          },
+          {
+            "slug": "conclusion",
+            "title": "Conclusion",
+            "file": "pages/conclusion/page.md",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "agent_view_tokens": 0,
+  "revision": "release-candidate-ab03d8e"
+}

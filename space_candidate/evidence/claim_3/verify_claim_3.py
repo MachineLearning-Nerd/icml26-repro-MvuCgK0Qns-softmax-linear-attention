@@ -43,6 +43,9 @@ def main() -> None:
         fail("at least one lemma assumption is not satisfied")
     if data.get("proof_certificate") != EXPECTED_PROOF:
         fail("proof certificate is incomplete or modified")
+
+    # Expand the right side of the completion-of-square step over abstract
+    # invariant contractions. This is independent of coordinate dimension.
     lhs = {
         "a^T m": Fraction(1),
         "a^T B g": Fraction(1),
