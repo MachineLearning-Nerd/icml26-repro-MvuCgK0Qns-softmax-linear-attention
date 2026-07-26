@@ -384,7 +384,10 @@ and `uv.lock`. The full-domain scientific run used Git SHA
 `cpu-upgrade` in 37 seconds. The flavor advertises 8 vCPUs/32 GB; Linux
 `cpu.max="800000 100000"` confirms the actual schedulable quota was 8.0 CPUs.
 Each exact certificate records its own sub-second verifier runtime. No GPU was
-used.
+used. The complete evaluator-facing surface was independently rerun at Git SHA
+`2cf14723924197cb375b727d228631fa0e10ed16` in HF run
+`af8297d4-fd11-4529-a905-b37f19153959`: 20/20 tests and the canonical traversal
+passed in 37 seconds with the same 8.0-CPU cgroup quota.
 
 ## Evaluator-visible evidence matrix
 

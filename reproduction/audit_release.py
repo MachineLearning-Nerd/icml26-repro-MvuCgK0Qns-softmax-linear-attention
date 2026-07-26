@@ -170,6 +170,8 @@ def main() -> None:
     for required in (
         FIXED_COMMAND,
         "64130159f3df3a0053280ffde22bb70a7c791265",
+        "2cf14723924197cb375b727d228631fa0e10ed16",
+        "af8297d4-fd11-4529-a905-b37f19153959",
         "20/20",
         "8.0 CPUs",
         "Historical rejected baseline",

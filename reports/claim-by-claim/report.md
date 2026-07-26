@@ -175,14 +175,14 @@ All formal experiments used Hugging Face `cpu-upgrade` and the image
 Host affinity exposed 64 logical CPUs, which is not reported as the
 allocation.
 
-Seven successful scientific cumulative runs took
-`49,48,48,48,47,47,37` seconds (324 seconds total). Two environmental setup
-runs failed in `11` and `21` seconds before producing scientific results. At
-the published `$0.03/hour` flavor price and one-minute billing granularity,
-the estimated charge through the full-domain run is `9 × $0.0005 = $0.0045`;
-the seven successful evidence runs account for `$0.0035`. Local work was
-limited to single-core, sub-five-minute inspection, rendering, and verifier
-checks.
+Nine successful cumulative runs took
+`49,48,48,48,47,47,53,37,37` seconds (414 seconds total). Two environmental
+setup runs failed in `11` and `21` seconds before producing scientific
+results. At the published `$0.03/hour` flavor price and one-minute billing
+granularity, the estimated charge through the evaluator-facing candidate is
+`11 × $0.0005 = $0.0055`; the nine successful runs account for `$0.0045`.
+Local work was limited to single-core, sub-five-minute inspection, rendering,
+and verifier checks.
 
 The environment is exactly Python `3.12.*` with `uv.lock`; the formal run
 reported Python `3.12.12`, NumPy `2.3.5`, and SciPy `1.17.1`.
