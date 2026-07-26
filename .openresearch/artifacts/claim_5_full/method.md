@@ -61,10 +61,17 @@ unit query scale only changes constants.
 Conditionally on `w`, the prompt-token covariance has operator norm at most
 `||Sigma||_op(1+||w||^2)`. Use
 `sigma_w^2=max(1,||Sigma||_op(1+||w||^2))`. Its polynomial moments are finite.
-For the logarithmic rate condition, split `||w||^2` at `sqrt(ln L)`: on the
-bounded part the integrand is at most `exp(-C sqrt(ln L))`, while the
-chi-square tail has the same exponential order up to a polynomial. Both beat
-`ln(L)^4`.
+For the logarithmic rate condition, set
+`a=max(1,||Sigma||_op)` and split `X=||w||^2` at `sqrt(ln L)`. For large `L`,
+
+`L^(-c/sigma_w^2) <= exp(-(c/(2a))sqrt(ln L))`
+
+on `X<=sqrt(ln L)`. On the complement, Markov's inequality with
+`E exp(X/4)=2^(d/2)` gives
+
+`P[X>sqrt(ln L)] <= 2^(d/2) exp(-sqrt(ln L)/4)`.
+
+Both terms remain zero after multiplication by `ln(L)^4`.
 
 Gaussian tilting is exactly
 `N(Gamma_w U z,Gamma_w)`. On a bounded parameter ball, all required tilted

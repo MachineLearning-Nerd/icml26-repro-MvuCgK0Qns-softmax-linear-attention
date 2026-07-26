@@ -1,13 +1,12 @@
 # STATUS — Softmax as Linear Attention
 
-**OpenReview:** `MvuCgK0Qns` · **State:** official high-quality 6/6 · **Updated:** 2026-07-16
+**OpenReview:** `MvuCgK0Qns` · **State:** 8/10 live; improved revision pending · **Updated:** 2026-07-26
 
-All three claims are supported by independent Gaussian integration,
-concentration, gradient-stability, and optimization-transfer evidence; all
-eight fail-closed tests pass.
-
-Official judge: all three claims verified at Space SHA `2f4196b0ec25bad9979ac21e92543168c33090a9`.
+The live judge verifies Claims 1–4 and leaves Theorem 5.1 inconclusive at
+Space SHA `29699a404594b1b4f4e0e0028e09f5b3e13cbffa`. A new direct
+full-domain Theorem 5.1 proof passes 20/20 cumulative tests on HF
+`cpu-upgrade`; publication and reevaluation are pending.
 
 - Trackio Space: https://huggingface.co/spaces/DineshAI/MvuCgK0Qns
-- Published Space SHA: `2f4196b0ec25bad9979ac21e92543168c33090a9`
+- Live judged Space SHA: `29699a404594b1b4f4e0e0028e09f5b3e13cbffa`
 - Source repository: https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention

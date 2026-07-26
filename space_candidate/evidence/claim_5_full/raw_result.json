@@ -1,6 +1,6 @@
 {
   "claim_id": 5,
-  "git_sha": "bbe74167d7aa8426b01d4fd55fd608397ac657de",
+  "git_sha": "64130159f3df3a0053280ffde22bb70a7c791265",
   "source": {
     "judged_source_url": "https://ar5iv.labs.arxiv.org/html/2512.11784",
     "judged_source_retrieved_utc_date": "2026-07-25",
@@ -50,7 +50,7 @@
     "conditional_token_scale": "sigma_w^2=max(1,||Sigma||_op(1+||w||_2^2))",
     "query_normalization": "write x_query=tau*g and replace U by tau*U inside each bounded-parameter concentration estimate",
     "moment_condition": "all polynomial moments of sigma_w are finite because ||w||_2^2 is chi-square_d",
-    "rate_condition": "split chi-square_d at sqrt(ln L); both the bounded part and tail are o(ln(L)^-4), so ln(L)^4 E[L^(-c/sigma_w^2)]->0",
+    "rate_condition": "with a=max(1,||Sigma||_op), split chi-square_d at sqrt(ln L); the pieces are bounded by exp(-(c/(2a))sqrt(ln L)) and 2^(d/2)exp(-sqrt(ln L)/4), so multiplying by ln(L)^4 still gives zero",
     "tilted_moments": "Gaussian exponential tilting gives N(Gamma_w U z,Gamma_w); on bounded U its required moments are polynomially bounded by tau and sigma_w",
     "conclusion": "the finite/infinite risk and gradient gaps used by Theorem 4.3 vanish for every fixed positive-definite Sigma; unit scale changes constants only"
   },
@@ -67,6 +67,14 @@
   },
   "verdict": "VERIFIED",
   "confidence": "HIGH",
+  "accepted_scientific_run": {
+    "git_sha": "64130159f3df3a0053280ffde22bb70a7c791265",
+    "run_id": "fa29e4cb-51dc-4ede-93c6-40a6517816f4",
+    "wall_seconds": 37,
+    "tests": "20/20",
+    "cpu_max": "800000 100000",
+    "quota_cpus": 8.0
+  },
   "negative_control": {
     "violated_assumption": "unbalanced initialization ||A(0)||_F^2!=b(0)^2",
     "result": "the balance-based stationary dichotomy is unavailable",
@@ -77,8 +85,8 @@
     "estimated_active_cores": 1,
     "selected_backend": "hf",
     "selected_flavor": "cpu-upgrade",
-    "cpu_max": null,
-    "quota_cpus": null,
-    "certificate_wall_seconds": 0.12431204199674539
+    "cpu_max": "800000 100000",
+    "quota_cpus": 8.0,
+    "certificate_wall_seconds": 0.08315348904579878
   }
 }

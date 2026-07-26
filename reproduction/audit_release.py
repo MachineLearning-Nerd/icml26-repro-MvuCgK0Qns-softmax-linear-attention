@@ -169,11 +169,28 @@ def main() -> None:
 
     for required in (
         FIXED_COMMAND,
+        "64130159f3df3a0053280ffde22bb70a7c791265",
+        "20/20",
         "8.0 CPUs",
         "Historical rejected baseline",
     ):
         if required not in current:
             fail(f"current page lacks provenance item: {required}")
+
+    historical_claim_5 = root / "evidence" / "claim_5"
+    preserved = {historical_claim_5 / name for name in PACKET_FILES} | {
+        historical_claim_5 / "verify_claim_5.py"
+    }
+    missing_historical = sorted(
+        str(path.relative_to(root)) for path in preserved if not path.is_file()
+    )
+    if missing_historical:
+        fail(f"historical Claim 5 packet missing: {missing_historical}")
+    hidden_historical = sorted(
+        str(path.relative_to(root)) for path in preserved - reachable
+    )
+    if hidden_historical:
+        fail(f"historical Claim 5 packet not reachable: {hidden_historical}")
 
     for path in root.rglob("*"):
         if not path.is_file() or path.suffix.lower() not in {

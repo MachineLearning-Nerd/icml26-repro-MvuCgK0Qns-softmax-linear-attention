@@ -10,7 +10,7 @@
     "icml2026-repro",
     "paper-MvuCgK0Qns"
   ],
-  "updated_at": "2026-07-25T00:00:00+00:00",
+  "updated_at": "2026-07-26T00:00:00+00:00",
   "root": {
     "slug": "index",
     "title": "Repro - Softmax as Linear Attention",
@@ -80,5 +80,5 @@
     ]
   },
   "agent_view_tokens": 0,
-  "revision": "release-candidate-ab03d8e"
+  "revision": "release-candidate-6413015"
 }

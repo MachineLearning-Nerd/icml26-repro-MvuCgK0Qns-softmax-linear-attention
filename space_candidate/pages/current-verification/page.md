@@ -321,9 +321,11 @@ estimates. Conditionally on `w`, a valid prompt-token sub-Gaussian envelope is
 
 `sigma_w^2=max(1,||Sigma||_op(1+||w||^2))`.
 
-Its polynomial moments are finite. Splitting the chi-square variable
-`||w||^2` at `sqrt(ln L)` shows both pieces of
-`ln(L)^4 E[L^(-c/sigma_w^2)]` vanish. Gaussian exponential tilting gives
+Its polynomial moments are finite. With `a=max(1,||Sigma||op)`, splitting
+`X=||w||^2` at `sqrt(ln L)` bounds the two pieces by
+`exp(-(c/(2a))sqrt(ln L))` and
+`2^(d/2)exp(-sqrt(ln L)/4)`. Both still vanish after multiplication by
+`ln(L)^4`. Gaussian exponential tilting gives
 `N(Gamma_w U z,Gamma_w)`, so the remaining moments are polynomially bounded
 on a bounded parameter ball. Thus finite covariance scale changes constants,
 not the vanishing risk and gradient gaps used by Theorem 4.3.
@@ -375,10 +377,11 @@ uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs
 ```
 
 The sole repository `.venv` is defined by Python `3.12.*`, `pyproject.toml`,
-and `uv.lock`. The final cumulative scientific run used Git SHA
-`ab03d8e28985c00899253218175049cb32eb0077`, deterministic numerical seeds
-`0,1,2`, and passed 18/18 tests. It ran on Hugging Face `cpu-upgrade` in 47
-seconds. The flavor advertises 8 vCPUs/32 GB; Linux
+and `uv.lock`. The full-domain scientific run used Git SHA
+`64130159f3df3a0053280ffde22bb70a7c791265`, deterministic numerical seeds
+`0,1,2`, and passed 20/20 tests in run
+`fa29e4cb-51dc-4ede-93c6-40a6517816f4`. It ran on Hugging Face
+`cpu-upgrade` in 37 seconds. The flavor advertises 8 vCPUs/32 GB; Linux
 `cpu.max="800000 100000"` confirms the actual schedulable quota was 8.0 CPUs.
 Each exact certificate records its own sub-second verifier runtime. No GPU was
 used.

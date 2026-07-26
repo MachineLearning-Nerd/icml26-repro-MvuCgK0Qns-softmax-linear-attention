@@ -87,6 +87,14 @@ def main() -> None:
         fail("Bayes endpoint certificate is incomplete")
     if data.get("verdict") != "VERIFIED" or data.get("confidence") != "HIGH":
         fail("claim status is not VERIFIED/HIGH")
+    run = data.get("accepted_scientific_run", {})
+    if (
+        run.get("git_sha") != "64130159f3df3a0053280ffde22bb70a7c791265"
+        or run.get("run_id") != "fa29e4cb-51dc-4ede-93c6-40a6517816f4"
+        or run.get("tests") != "20/20"
+        or run.get("quota_cpus") != 8.0
+    ):
+        fail("accepted scientific run provenance is incomplete")
 
     print(
         "PASS: direct balanced-gradient-flow proof converges to the exact "

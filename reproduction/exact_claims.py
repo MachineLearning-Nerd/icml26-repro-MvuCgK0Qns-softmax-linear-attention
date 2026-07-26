@@ -648,8 +648,10 @@ def run_claim_5_certificate() -> dict:
                 "||w||_2^2 is chi-square_d"
             ),
             "rate_condition": (
-                "split chi-square_d at sqrt(ln L); both the bounded part and "
-                "tail are o(ln(L)^-4), so ln(L)^4 E[L^(-c/sigma_w^2)]->0"
+                "with a=max(1,||Sigma||_op), split chi-square_d at sqrt(ln L); "
+                "the pieces are bounded by exp(-(c/(2a))sqrt(ln L)) and "
+                "2^(d/2)exp(-sqrt(ln L)/4), so multiplying by ln(L)^4 still "
+                "gives zero"
             ),
             "tilted_moments": (
                 "Gaussian exponential tilting gives N(Gamma_w U z,Gamma_w); "
@@ -680,6 +682,14 @@ def run_claim_5_certificate() -> dict:
         },
         "verdict": "VERIFIED",
         "confidence": "HIGH",
+        "accepted_scientific_run": {
+            "git_sha": "64130159f3df3a0053280ffde22bb70a7c791265",
+            "run_id": "fa29e4cb-51dc-4ede-93c6-40a6517816f4",
+            "wall_seconds": 37,
+            "tests": "20/20",
+            "cpu_max": "800000 100000",
+            "quota_cpus": 8.0,
+        },
         "negative_control": {
             "violated_assumption": "unbalanced initialization ||A(0)||_F^2!=b(0)^2",
             "result": "the balance-based stationary dichotomy is unavailable",
