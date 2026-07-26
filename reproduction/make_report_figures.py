@@ -36,13 +36,13 @@ def save(fig: plt.Figure, path: Path) -> None:
 
 def claim_outcomes(output_dir: Path) -> None:
     labels = ["Prop. 3.1", "Prop. 3.4", "Lemma 2.1", "Theorem 4.3", "Theorem 5.1"]
-    statuses = ["FALSIFIED", "FALSIFIED", "VERIFIED", "VERIFIED", "BLOCKED"]
+    statuses = ["FALSIFIED", "FALSIFIED", "VERIFIED", "VERIFIED", "VERIFIED"]
     basis = [
         "exact L=1 witness",
         "exact L=1 gradient witness",
         "dimension-free Gaussian proof",
         "arbitrary-ε transfer proof",
-        "endpoint proved; domain gap",
+        "full-domain dynamics proof",
     ]
     fig, ax = plt.subplots(figsize=(11.5, 4.2))
     y = np.arange(len(labels))[::-1]
@@ -53,7 +53,7 @@ def claim_outcomes(output_dir: Path) -> None:
     ax.set_yticks(y, labels)
     ax.set_xlim(0, 1)
     ax.set_xticks([])
-    ax.set_title("Exact claim audit: four resolved, one honestly blocked", loc="left", weight="bold")
+    ax.set_title("Exact claim audit: all five quantified contracts resolved", loc="left", weight="bold")
     ax.text(
         0,
         -0.18,
@@ -154,7 +154,7 @@ def historical_concentration(output_dir: Path, data_dir: Path) -> None:
     save(fig, output_dir / "historical_concentration.png")
 
 
-def bayes_and_gap(output_dir: Path, data_dir: Path) -> None:
+def bayes_full_domain(output_dir: Path, data_dir: Path) -> None:
     rows = read_csv(data_dir / "bayes_transfer.csv")
     fig, axes = plt.subplots(1, 2, figsize=(11.5, 4.5))
     ax = axes[0]
@@ -175,28 +175,42 @@ def bayes_and_gap(output_dir: Path, data_dir: Path) -> None:
     ax.spines[["top", "right"]].set_visible(False)
 
     ax = axes[1]
-    ax.bar(["paper α interval", "cited theorem\ncondition"], [1, 0], color=["#047857", "#b91c1c"])
-    ax.set_ylim(0, 1.15)
-    ax.set_yticks([0, 1], ["not satisfied", "satisfied"])
-    ax.set_title("Exact dependency-gap witness")
-    ax.text(
-        0.5,
-        0.52,
-        "d=1\n‖Σ‖=1/4\nα=4\n\npaper: 4<4√2\ncited LHS: 4≮2",
-        transform=ax.transAxes,
-        ha="center",
-        va="center",
-        fontsize=10,
-        bbox={"boxstyle": "round", "fc": "#fffbeb", "ec": "#b45309"},
-    )
+    ax.axis("off")
+    steps = [
+        ("Exact risk", "R=½‖(bΣA−I)Σ¹ᐟ²‖²"),
+        ("Balanced flow", "‖A‖²−b²=0"),
+        ("Exclude origin", "tr(A)>0\nand increases nearby"),
+        ("Unique limit", "bΣA=I\nrisk = 0"),
+    ]
+    ys = np.linspace(0.84, 0.16, len(steps))
+    for idx, (y, (title, body)) in enumerate(zip(ys, steps)):
+        ax.text(
+            0.5,
+            y,
+            f"{title}\n{body}",
+            transform=ax.transAxes,
+            ha="center",
+            va="center",
+            bbox={"boxstyle": "round,pad=0.45", "fc": "#ecfdf5", "ec": "#047857"},
+            fontsize=9.5,
+        )
+        if idx < len(steps) - 1:
+            ax.annotate(
+                "",
+                xy=(0.5, ys[idx + 1] + 0.075),
+                xytext=(0.5, y - 0.075),
+                xycoords=ax.transAxes,
+                arrowprops={"arrowstyle": "->", "color": "#374151"},
+            )
+    ax.set_title("Direct proof replaces the narrower citation", weight="bold")
     ax.spines[["top", "right"]].set_visible(False)
     fig.suptitle(
-        "The Bayes endpoint is exact; the universal training theorem still has an uncovered domain",
+        "Theorem 5.1: exact Bayes endpoint and full-domain convergence certificate",
         x=0.06,
         ha="left",
         weight="bold",
     )
-    save(fig, output_dir / "bayes_endpoint_and_dependency_gap.png")
+    save(fig, output_dir / "bayes_full_domain_proof.png")
 
 
 def main() -> None:
@@ -210,7 +224,7 @@ def main() -> None:
     literal_boundary(args.output_dir)
     gaussian_identity(args.output_dir)
     historical_concentration(args.output_dir, args.data_dir)
-    bayes_and_gap(args.output_dir, args.data_dir)
+    bayes_full_domain(args.output_dir, args.data_dir)
 
 
 if __name__ == "__main__":

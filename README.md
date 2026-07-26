@@ -4,9 +4,10 @@
 
 This is an independent, CPU-only audit of
 [Softmax as Linear Attention in the Large-Prompt Regime](https://arxiv.org/abs/2512.11784)
-(OpenReview `MvuCgK0Qns`). The previous live judge awarded `5/10` because all
-five checks were useful but toy-scale. The current campaign tests each
-published claim literally:
+(OpenReview `MvuCgK0Qns`). The live judge awards `8/10` at judged Space
+revision `29699a404594b1b4f4e0e0028e09f5b3e13cbffa`: Claims 1–4 are
+resolved and Theorem 5.1 is inconclusive. The newly published revision closes
+that remaining proof gap and is awaiting a new judge verdict:
 
 | Paper claim | Paper result | Observed result | Assessment |
 |---|---|---|---|
@@ -14,16 +15,17 @@ published claim literally:
 | Proposition 3.4 | analogous `U,V` gradient bounds | both exact gradient errors are `1>0`; all nine moment assumptions hold | **FALSIFIED** as published |
 | Lemma 2.1 | Gaussian attention equals `Vm+VΓKᵀQz` | dimension-free MGF proof, including singular `Γ` | **VERIFIED** |
 | Theorem 4.3 | finite-flow limiting risk transfers within arbitrary `ε` | exact `ε/2+ε/2` proof and monotonicity certificate | **VERIFIED** |
-| Theorem 5.1 | Bayes-optimal training for every invertible anisotropic `Σ` in the displayed initialization interval | endpoint risk is exactly zero, but the full domain is not covered by the cited convergence proof | **BLOCKED** |
+| Theorem 5.1 | Bayes-optimal training for every invertible anisotropic `Σ` in the displayed initialization interval | direct balanced-flow proof covers every positive-definite `Σ` and every `α>0`; scale audit closes the transfer | **VERIFIED** |
 
-The strongest supported forecast is `9/10`, not a judge result. Claims 1 and 2
-have a material interpretation risk: an unstated `L≥2` repair would evade the
-boundary witnesses. Claim 5 is not promoted beyond its evidence.
+The conservative projected range is `8–10/10`; the best-supported possible
+score is `10/10`, both forecasts rather than judge results. Claims 1 and 2
+retain an interpretation risk: an unstated `L≥2` repair would evade the
+boundary witnesses.
 
 - [Published Hugging Face Space](https://huggingface.co/spaces/DineshAI/MvuCgK0Qns)
   at revision
-  [`29699a404594b1b4f4e0e0028e09f5b3e13cbffa`](https://huggingface.co/spaces/DineshAI/MvuCgK0Qns/commit/29699a404594b1b4f4e0e0028e09f5b3e13cbffa)
-  — awaiting a new live judge verdict
+  [`e69cfc1d71736a13a805d985d6254c7da8e65a5b`](https://huggingface.co/spaces/DineshAI/MvuCgK0Qns/commit/e69cfc1d71736a13a805d985d6254c7da8e65a5b)
+  — post-publication checks pass; awaiting a new live judge verdict
 - [Illustrated claim-by-claim report](reports/claim-by-claim/report.md)
 - [Evidence-first marimo tutorial](notebooks/softmax_linear_attention.py)
 - [Current evaluator-visible verification](space_candidate/pages/current-verification/page.md)
@@ -41,8 +43,8 @@ establish a dimension-universal theorem or the paper's `σ`-dependent rate.
 The new proof certificates are not downscaled simulations. Claims 1 and 2 use
 one-dimensional witnesses because one assumption-satisfying counterexample is
 sufficient to resolve a universal statement. Claims 3 and 4 are
-dimension-free and arbitrary-`ε`, respectively. Claim 5 is explicitly
-BLOCKED where its universal gradient-flow obligation remains unresolved.
+dimension-free and arbitrary-`ε`, respectively. Claim 5 uses a direct
+dimension-general proof, not the narrower cited sufficient condition.
 
 Formal compute was Hugging Face `cpu-upgrade`, CPU only: 8-vCPU cgroup quota,
 32 GB RAM, Python 3.12, and the locked `uv` environment. No GPU was used.
@@ -60,7 +62,9 @@ Every formal node inherited the same command verbatim:
 | [`orx/lemma-2-1-dimension-free-proof-certificate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/lemma-2-1-dimension-free-proof-certificate) | Replace finite quadrature with a dimension-free proof | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | VERIFIED; cumulative tests pass | HF `cpu-upgrade`, 8-vCPU quota, 48 s |
 | [`orx/theorem-4-3-epsilon-transfer-proof-certificate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/theorem-4-3-epsilon-transfer-proof-certificate) | Reconstruct the full arbitrary-`ε` risk-transfer proof | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | VERIFIED; cumulative tests pass | HF `cpu-upgrade`, 8-vCPU quota, 47 s |
 | [`orx/theorem-5-1-bayes-certificate-and-dependency-aud`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/theorem-5-1-bayes-certificate-and-dependency-aud) | Prove the Bayes endpoint and audit the universal training dependencies | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | Endpoint exact; full theorem BLOCKED; 18/18 tests | HF `cpu-upgrade`, 8-vCPU quota, 47 s |
-| [`orx/evaluator-visible-release-candidate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/evaluator-visible-release-candidate) | Add the report, notebook, full Space union, manifests, and blind-review gate | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | 19/19 tests; release audit passes | HF `cpu-upgrade`, 8-vCPU quota, 53 s |
+| [`orx/theorem-5-1-full-domain-direct-proof-certificate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/theorem-5-1-full-domain-direct-proof-certificate) | Replace the narrow cited condition with a full-domain matrix-flow proof and covariance-scale audit | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | Theorem 5.1 VERIFIED; 20/20 cumulative tests | HF `cpu-upgrade`, 8-vCPU quota, 37 s |
+| [`orx/10-point-evaluator-visible-release-candidate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/10-point-evaluator-visible-release-candidate) | Mirror the proof into canonical pages and validate the visual report/notebook | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | 20/20 tests; evaluator-visible release audit passed | HF `cpu-upgrade`, 8-vCPU quota, 37 s |
+| [`orx/final-additive-space-publication`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/final-additive-space-publication) | Freeze manifests, preservation proof, blind reviews, and the final additive upload candidate | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | 20/20 tests; all release gates passed | HF `cpu-upgrade`, 8-vCPU quota, 37 s |
 | `master` | Publication surface for the report, notebook, and exact published text | Not run as an experiment (publication surface) | Mirrors the winning cumulative evidence | No experiment compute |
 
 ## Reproduce

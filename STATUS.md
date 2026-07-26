@@ -1,26 +1,19 @@
 # STATUS — Softmax as Linear Attention
 
-**OpenReview:** `MvuCgK0Qns` · **State:** awaiting a new live judge verdict ·
-**Updated:** 2026-07-25
+**OpenReview:** `MvuCgK0Qns` · **State:** 8/10 live; published revision awaiting judge · **Updated:** 2026-07-26
 
-The previous live judged score remains **5/10** at judge head
-`2f4196b0ec25bad9979ac21e92543168c33090a9`. A new text-only candidate was
-published and post-verified at Space revision
-`29699a404594b1b4f4e0e0028e09f5b3e13cbffa`.
-
-Current evidence verdicts:
-
-- Proposition 3.1 — **FALSIFIED**, MEDIUM confidence
-- Proposition 3.4 — **FALSIFIED**, MEDIUM confidence
-- Lemma 2.1 — **VERIFIED**, HIGH confidence
-- Theorem 4.3 — **VERIFIED**, MEDIUM confidence
-- Theorem 5.1 — **BLOCKED**, MEDIUM confidence; exact Bayes endpoint only
-
-The conservative forecast is **7–9/10**, with **9/10** the best-supported
-possible score. This is not a judge result.
+The live judge verifies Claims 1–4 and leaves Theorem 5.1 inconclusive at
+judged Space SHA `29699a404594b1b4f4e0e0028e09f5b3e13cbffa`. A direct
+full-domain Theorem 5.1 proof passes 20/20 cumulative tests on HF
+`cpu-upgrade` and is published at Space revision
+`e69cfc1d71736a13a805d985d6254c7da8e65a5b`. Exact post-publication
+download, hash, preservation, verifier, control, and canonical-traversal
+checks pass. The new revision is awaiting live evaluation.
 
 - Trackio Space: https://huggingface.co/spaces/DineshAI/MvuCgK0Qns
-- Published Space SHA: `29699a404594b1b4f4e0e0028e09f5b3e13cbffa`
-- Winning release branch: `orx/evaluator-visible-release-candidate`
-- Formal release Git SHA: `bbe74167d7aa8426b01d4fd55fd608397ac657de`
+- Live judged Space SHA: `29699a404594b1b4f4e0e0028e09f5b3e13cbffa`
+- Published candidate Space SHA: `e69cfc1d71736a13a805d985d6254c7da8e65a5b`
+- Winning branch: `orx/final-additive-space-publication`
+- Winning Git SHA: `e5b0092e99abc35be3f447418cf48c15a02a597b`
+- Formal HF run: `7a43672b-ec8e-4e70-bb52-38e45b5aecfc` (37 s, 8.0 CPUs)
 - Source repository: https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention

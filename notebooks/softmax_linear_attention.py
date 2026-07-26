@@ -22,10 +22,10 @@ def _(mo):
     | Proposition 3.4 gradient bounds | Both exact gradient errors `1` exceed stated bounds `0` | **FALSIFIED** |
     | Lemma 2.1 Gaussian affine identity | Dimension-free Gaussian MGF proof | **VERIFIED** |
     | Theorem 4.3 risk transfer | Arbitrary-ε proof plus monotonicity | **VERIFIED** |
-    | Theorem 5.1 Bayes-optimal training | Endpoint risk is exactly zero; full training domain remains uncovered | **BLOCKED** |
+    | Theorem 5.1 Bayes-optimal training | Direct balanced-flow proof covers every positive-definite covariance and every published initialization | **VERIFIED** |
 
     These are the already-produced formal results from the cumulative
-    18-test CPU run. This notebook is explanatory: no expensive experiment
+    20-test CPU run. This notebook is explanatory: no expensive experiment
     is required to see or understand them.
     """)
     return
@@ -142,25 +142,32 @@ def _(epsilon, mo):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## Where Theorem 5.1 stops
+    ## How Theorem 5.1 is closed
 
     The advertised endpoint matrices predict \(w^\top x\) exactly for
     every invertible anisotropic covariance, so their squared risk is
-    exactly zero. But endpoint optimality does not prove that gradient flow
-    reaches the endpoint over the theorem's complete initialization
-    domain.
+    exactly zero. The new certificate also proves that the balanced
+    population gradient flow reaches that endpoint.
 
-    Two dependencies leave that obligation open:
+    Writing its matrix and scalar blocks as \(A,b\), the exact risk is
 
-    1. the paper's assumption lemma covers only
-       \(\|\Sigma\|_{\mathrm{op}}\leq1\), while the theorem states every
-       invertible \(\Sigma\);
-    2. with \(d=1,\|\Sigma\|=1/4,\alpha=4\), the paper's displayed alpha
-       bound holds, but the cited convergence condition has left side
-       `4`, not `<2`.
+    \[
+    R(A,b)=\tfrac12\operatorname{tr}
+      ((b\Sigma A-I)\Sigma(b\Sigma A-I)^\top).
+    \]
 
-    That is a proof gap, not a counterexample. The honest theorem verdict
-    is therefore **BLOCKED**.
+    The flow preserves \(\|A\|_F^2-b^2=0\). Its only balanced stationary
+    possibilities are the origin and \(bA\Sigma=I\). Positive diagonal
+    entries from \(A(0)=\alpha\Theta\Theta^\top\), together with a trace
+    inequality near the origin, exclude convergence to zero. Balancedness
+    then fixes the unique zero-risk limit. This holds for every
+    \(\alpha>0\), stronger than the paper's interval.
+
+    For general covariance scale, query normalization and the conditional
+    envelope
+    \(\sigma_w^2=\max(1,\|\Sigma\|_{\rm op}(1+\|w\|^2))\)
+    show that the finite/infinite concentration estimates still vanish;
+    scale changes constants only.
 
     [Read the complete report](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/blob/master/reports/claim-by-claim/report.md)
     or inspect the executable evidence in

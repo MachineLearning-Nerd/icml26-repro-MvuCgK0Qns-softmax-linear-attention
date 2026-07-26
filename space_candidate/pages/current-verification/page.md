@@ -256,7 +256,7 @@ qualitative.
 
 ## Claim 5 — Theorem 5.1
 
-Verdict: **BLOCKED**. Confidence: **MEDIUM**.
+Verdict: **VERIFIED**. Confidence: **HIGH**.
 
 The exact published contract quantifies over every invertible `Sigma`, every
 Equation (9) initialization with
@@ -266,9 +266,71 @@ Equation (9) initialization with
 and every sufficiently large prompt length. It concludes that finite-softmax
 gradient-flow risk approaches the Bayes risk.
 
-The central Bayes endpoint is now proved exactly. Write
-`c=tr(Sigma^-2)^(1/4)`. The advertised limit matrices have top block
-`U*=c^-1 Sigma^-1` and bottom selector `V*=c`. For
+The previous packet proved the endpoint but remained BLOCKED because the cited
+JMLR theorem used a narrower initialization condition and the paper's
+assumption lemma wrote `||Sigma||_op<=1`. The
+[Historical rejected baseline](../historical-rejected-claim-5/page.md) is
+preserved unchanged. The current verifier removes both dependencies with a
+direct full-domain proof.
+
+Let the preserved trainable blocks be a matrix `A` and scalar `b`. Gaussian
+integration gives the exact infinite-prompt risk
+
+`R(A,b)=1/2 tr((b Sigma A-I) Sigma (b Sigma A-I)^T)`.
+
+Its gradient flow is
+
+`A_dot=b Sigma^2-b^2 Sigma^2 A Sigma`,
+
+`b_dot=tr(A^T Sigma^2)-b tr(A^T Sigma^2 A Sigma)`.
+
+The paper's initialization satisfies the invariant
+`||A(t)||_F^2-b(t)^2=0`. Since `b(0)>0`, it cannot cross zero: balancedness
+would force `A=0`, and ODE uniqueness would contradict the nonzero
+initialization. Loss sublevels are bounded because `Sigma` is positive
+definite, and this bounded real-analytic gradient trajectory converges to a
+stationary point. On the balanced manifold, a stationary point is either the
+origin or satisfies `b A Sigma=I`, hence also `b Sigma A=I`.
+
+The origin is impossible. Diagonalize `Sigma=diag(s_i)` and write
+`a_i=A_ii`. Since `A(0)=alpha Theta Theta^T`, all `a_i(0)>=0`, at least one is
+positive, and
+
+`a_i_dot=b s_i^2(1-b s_i a_i)`
+
+points strictly inward at `a_i=0`. Hence `tr(A)>0`. Near the origin,
+
+`tr(A)_dot=b sum_i s_i^2-b^2 sum_i s_i^3 a_i`
+
+`>=(b/2) sum_i s_i^2>0`,
+
+using `|a_i|<=||A||_F=b`. A positive trace cannot converge to zero while
+eventually increasing. Therefore the limit is the zero-risk stationary point.
+Balancedness fixes it uniquely:
+
+`b=tr(Sigma^-2)^(1/4)`,
+
+`A=tr(Sigma^-2)^(-1/4) Sigma^-1`.
+
+This proof holds for every `alpha>0`, stronger than the displayed interval.
+
+For arbitrary covariance scale, put
+`tau=sqrt(||Sigma||_op)<infinity`. Writing `x_query=tau g` with `g`
+1-sub-Gaussian only rescales the bounded parameter in the concentration
+estimates. Conditionally on `w`, a valid prompt-token sub-Gaussian envelope is
+
+`sigma_w^2=max(1,||Sigma||_op(1+||w||^2))`.
+
+Its polynomial moments are finite. With `a=max(1,||Sigma||op)`, splitting
+`X=||w||^2` at `sqrt(ln L)` bounds the two pieces by
+`exp(-(c/(2a))sqrt(ln L))` and
+`2^(d/2)exp(-sqrt(ln L)/4)`. Both still vanish after multiplication by
+`ln(L)^4`. Gaussian exponential tilting gives
+`N(Gamma_w U z,Gamma_w)`, so the remaining moments are polynomially bounded
+on a bounded parameter ball. Thus finite covariance scale changes constants,
+not the vanishing risk and gradient gaps used by Theorem 4.3.
+
+Finally, write `c=tr(Sigma^-2)^(1/4)`. For
 
 `Gamma_w=[[Sigma,Sigma w],[w^T Sigma,w^T Sigma w]]`,
 
@@ -280,55 +342,31 @@ so `V* Gamma_w U*(x,0)` predicts `w^T x` pointwise. Its squared error and risk
 are exactly zero for every invertible anisotropic `Sigma`; nonnegative squared
 loss makes this Bayes optimal.
 
-The universal training claim remains blocked by two proof-domain gaps:
+- Raw proof result: [raw_result.json](../../evidence/claim_5_full/raw_result.json)
+- Contract: [claim_contract.json](../../evidence/claim_5_full/claim_contract.json)
+- Fail-closed verifier: [verify_claim_5.py](../../evidence/claim_5_full/verify_claim_5.py)
+- Verifier output: [verifier_output.txt](../../evidence/claim_5_full/verifier_output.txt)
+- Independent dynamics checker: [independent_check.py](../../evidence/claim_5_full/independent_check.py)
+- Independent output: [independent_checker_output.txt](../../evidence/claim_5_full/independent_checker_output.txt)
+- Negative control: [negative_control.py](../../evidence/claim_5_full/negative_control.py)
+- Negative-control output: [negative_control_output.txt](../../evidence/claim_5_full/negative_control_output.txt)
+- Source audit: [source_audit.md](../../evidence/claim_5_full/source_audit.md)
+- Method: [method.md](../../evidence/claim_5_full/method.md)
+- Fixed command: [command.txt](../../evidence/claim_5_full/command.txt)
+- Environment and CPU: [environment.md](../../evidence/claim_5_full/environment.md)
+- Limitations: [limitations.md](../../evidence/claim_5_full/limitations.md)
+- Evaluation record: [EVAL.md](../../evidence/claim_5_full/EVAL.md)
 
-1. Lemma E.1 establishes Theorem 4.3's assumptions only for
-   `||Sigma||_op<=1`, while Theorem 5.1 states only invertibility.
-2. The cited JMLR convergence theorem requires, at infinite prompt,
-   `alpha^2||Sigma||_op sqrt(d)<2`. The published alpha interval does not imply
-   this when `||Sigma||_op<1`. Exactly, `d=1`, `||Sigma||=1/4`, `alpha=4`
-   satisfies the paper's `alpha<4sqrt(2)` condition but gives cited-condition
-   left side `4`, not `<2`.
-
-This is not a theorem counterexample: it shows that the cited sufficient
-condition cannot certify the full published interval. Indeed, the independently
-derived scalar ODE `x'=s²x(1-sx²)` converges to the Bayes product for every
-`alpha>0`, so the simplest falsification route finds no contradiction.
-
-Three distinct routes are recorded: compositional proof audit, direct
-dimension-free Bayes algebra, and scalar boundary dynamics plus exact condition
-audit. The confidence is MEDIUM because the endpoint and transfer mechanism are
-exact but a material general-dimensional convergence obligation remains.
-
-- Raw result and gaps: [raw_result.json](../../evidence/claim_5/raw_result.json)
-- Contract: [claim_contract.json](../../evidence/claim_5/claim_contract.json)
-- Fail-closed BLOCKED verifier: [verify_claim_5.py](../../evidence/claim_5/verify_claim_5.py)
-- Verifier output: [verifier_output.txt](../../evidence/claim_5/verifier_output.txt)
-- Independent Bayes checker: [independent_check.py](../../evidence/claim_5/independent_check.py)
-- Independent output: [independent_checker_output.txt](../../evidence/claim_5/independent_checker_output.txt)
-- Negative control: [negative_control.py](../../evidence/claim_5/negative_control.py)
-- Negative-control output: [negative_control_output.txt](../../evidence/claim_5/negative_control_output.txt)
-- Source audit: [source_audit.md](../../evidence/claim_5/source_audit.md)
-- Method and three routes: [method.md](../../evidence/claim_5/method.md)
-- Fixed command: [command.txt](../../evidence/claim_5/command.txt)
-- Environment and CPU: [environment.md](../../evidence/claim_5/environment.md)
-- Limitations and unblocker: [limitations.md](../../evidence/claim_5/limitations.md)
-- Evaluation record: [EVAL.md](../../evidence/claim_5/EVAL.md)
-
-Verifier output (exit code 2 by design):
+Verifier output:
 
 ```text
-BLOCKED: Bayes-zero limit algebra is exact, but the published universal Sigma/alpha domain is not covered by the cited convergence and assumption audits.
+PASS: direct balanced-gradient-flow proof converges to the exact zero-risk Bayes endpoint for every positive-definite Sigma and every published initialization; finite covariance scale changes transfer constants only.
 ```
 
-The anisotropic control replaces `Sigma^-1` by `I`; for
-`Sigma=diag(1,2)` it predicts `3` instead of label `2`, with squared error `1`,
-and is rejected with exit code 1.
-
-Unblocker: prove infinite-prompt gradient-flow convergence for every invertible
-`Sigma` and the complete displayed alpha interval, and extend the Theorem 4.3
-assumption audit beyond `||Sigma||_op<=1`; alternatively, exhibit a valid
-assumption-satisfying counterexample.
+The independent checker uses exact rational arithmetic and imports no
+reproduction code. The control violates the balance invariant and is rejected
+with exit code 1, so the proof cannot be applied outside its stated
+initialization assumptions.
 
 ## Fixed command, environment, and cumulative result
 
@@ -339,13 +377,17 @@ uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs
 ```
 
 The sole repository `.venv` is defined by Python `3.12.*`, `pyproject.toml`,
-and `uv.lock`. The final cumulative scientific run used Git SHA
-`ab03d8e28985c00899253218175049cb32eb0077`, deterministic numerical seeds
-`0,1,2`, and passed 18/18 tests. It ran on Hugging Face `cpu-upgrade` in 47
-seconds. The flavor advertises 8 vCPUs/32 GB; Linux
+and `uv.lock`. The full-domain scientific run used Git SHA
+`64130159f3df3a0053280ffde22bb70a7c791265`, deterministic numerical seeds
+`0,1,2`, and passed 20/20 tests in run
+`fa29e4cb-51dc-4ede-93c6-40a6517816f4`. It ran on Hugging Face
+`cpu-upgrade` in 37 seconds. The flavor advertises 8 vCPUs/32 GB; Linux
 `cpu.max="800000 100000"` confirms the actual schedulable quota was 8.0 CPUs.
 Each exact certificate records its own sub-second verifier runtime. No GPU was
-used.
+used. The complete evaluator-facing surface was independently rerun at Git SHA
+`2cf14723924197cb375b727d228631fa0e10ed16` in HF run
+`af8297d4-fd11-4529-a905-b37f19153959`: 20/20 tests and the canonical traversal
+passed in 37 seconds with the same 8.0-CPU cgroup quota.
 
 ## Evaluator-visible evidence matrix
 
@@ -355,4 +397,4 @@ used.
 | 2 | Current verification | Yes | Yes | Yes | Yes | Yes | Literal Proposition 3.4 and Assumption 3.3 | FALSIFIED |
 | 3 | Current verification | Yes | Yes | Yes | Yes | Yes | Lemma 2.1 operator identity, all d and PSD Gamma | VERIFIED |
 | 4 | Current verification | Yes | Yes | Yes | Yes | Yes | Full Theorem 4.3 quantifiers and assumptions | VERIFIED |
-| 5 | Current verification | Yes | Yes | Yes | Yes | Yes | Full Theorem 5.1 contract; dependency gaps explicit | BLOCKED |
+| 5 | Current verification | Yes | Yes | Yes | Yes | Yes | Full Theorem 5.1 covariance, initialization, convergence, transfer, and Bayes contract | VERIFIED |

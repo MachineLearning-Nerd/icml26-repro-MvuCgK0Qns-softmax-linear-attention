@@ -6,6 +6,7 @@
 
 ## Historical rejected baseline
 
+- [Historical rejected baseline — Theorem 5.1 at the live 8/10 revision](historical-rejected-claim-5/page.md)
 - [Historical rejected baseline](historical-rejected-baseline/page.md)
 - [00 - Scored evidence summary](00-scored-evidence-summary/page.md)
 - [Claim 1 - Gaussian affine limit](claim-1-gaussian-affine-limit/page.md)

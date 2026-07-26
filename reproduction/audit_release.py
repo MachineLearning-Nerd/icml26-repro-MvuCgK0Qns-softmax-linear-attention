@@ -95,7 +95,8 @@ def run_check(command: list[str], expected_code: int, expected_output: Path) -> 
 
 
 def audit_claim(root: Path, claim: int, reachable: set[Path]) -> None:
-    packet = root / "evidence" / f"claim_{claim}"
+    packet_name = "claim_5_full" if claim == 5 else f"claim_{claim}"
+    packet = root / "evidence" / packet_name
     missing = sorted(PACKET_FILES - {path.name for path in packet.iterdir() if path.is_file()})
     if missing:
         fail(f"claim {claim} packet missing {missing}")
@@ -108,10 +109,9 @@ def audit_claim(root: Path, claim: int, reachable: set[Path]) -> None:
         fail(f"claim {claim} evidence not reachable from README: {hidden}")
 
     raw = packet / "raw_result.json"
-    expected_verifier_code = 2 if claim == 5 else 0
     run_check(
         [sys.executable, str(verifier), "--raw", str(raw)],
-        expected_verifier_code,
+        0,
         packet / "verifier_output.txt",
     )
     run_check(
@@ -160,7 +160,7 @@ def main() -> None:
         2: "FALSIFIED",
         3: "VERIFIED",
         4: "VERIFIED",
-        5: "BLOCKED",
+        5: "VERIFIED",
     }.items():
         audit_claim(root, claim, reachable)
         row_pattern = re.compile(rf"\|\s*{claim}\s*\|[^\n]*\|\s*{verdict}\s*\|")
@@ -169,13 +169,30 @@ def main() -> None:
 
     for required in (
         FIXED_COMMAND,
-        "ab03d8e28985c00899253218175049cb32eb0077",
-        "18/18",
+        "64130159f3df3a0053280ffde22bb70a7c791265",
+        "2cf14723924197cb375b727d228631fa0e10ed16",
+        "af8297d4-fd11-4529-a905-b37f19153959",
+        "20/20",
         "8.0 CPUs",
         "Historical rejected baseline",
     ):
         if required not in current:
             fail(f"current page lacks provenance item: {required}")
+
+    historical_claim_5 = root / "evidence" / "claim_5"
+    preserved = {historical_claim_5 / name for name in PACKET_FILES} | {
+        historical_claim_5 / "verify_claim_5.py"
+    }
+    missing_historical = sorted(
+        str(path.relative_to(root)) for path in preserved if not path.is_file()
+    )
+    if missing_historical:
+        fail(f"historical Claim 5 packet missing: {missing_historical}")
+    hidden_historical = sorted(
+        str(path.relative_to(root)) for path in preserved - reachable
+    )
+    if hidden_historical:
+        fail(f"historical Claim 5 packet not reachable: {hidden_historical}")
 
     for path in root.rglob("*"):
         if not path.is_file() or path.suffix.lower() not in {

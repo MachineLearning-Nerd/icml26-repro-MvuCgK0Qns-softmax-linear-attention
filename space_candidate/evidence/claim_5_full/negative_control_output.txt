@@ -1,0 +1,1 @@
+EXPECTED REJECTION: ||A(0)||_F^2-b(0)^2 is not zero, so the balanced stationary dichotomy cannot certify this control.

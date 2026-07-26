@@ -1,0 +1,15 @@
+{
+  "claim_id": 5,
+  "judged_anchor": "Section 5, Theorem 5.1, judged HTML id S5.Thmtheorem1",
+  "latest_anchor": "arXiv v2 Section 5, Theorem 5.2, HTML id S5.Thmtheorem2",
+  "verdict_target": "VERIFIED",
+  "literal_contract": "For every positive-definite Sigma and every stated balanced initialization with 0<alpha<sqrt(2)/(d^(1/4)||Sigma||_op), for every epsilon>0 there is L(epsilon) such that every L>=L(epsilon) has limiting finite-softmax gradient-flow risk at most the Bayes risk plus epsilon.",
+  "acceptance": [
+    "Derive the exact infinite-prompt population risk and gradient-flow equations.",
+    "Prove convergence from the full published initialization domain without relying on the narrower cited JMLR sufficient condition.",
+    "Prove the only attainable limit is the advertised zero-risk Bayes endpoint.",
+    "Track arbitrary finite covariance scale through the finite/infinite transfer estimates.",
+    "Reject a control that violates balanced initialization.",
+    "Exit nonzero if any proof obligation is absent or altered."
+  ]
+}
