@@ -1,0 +1,1 @@
+PASS independent exact dynamics: balance derivative is zero, the trace identity and anisotropic Bayes products hold, and arbitrary finite covariance has a finite conditional sub-Gaussian envelope.

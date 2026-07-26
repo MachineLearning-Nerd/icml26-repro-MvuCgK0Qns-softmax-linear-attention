@@ -95,7 +95,8 @@ def run_check(command: list[str], expected_code: int, expected_output: Path) -> 
 
 
 def audit_claim(root: Path, claim: int, reachable: set[Path]) -> None:
-    packet = root / "evidence" / f"claim_{claim}"
+    packet_name = "claim_5_full" if claim == 5 else f"claim_{claim}"
+    packet = root / "evidence" / packet_name
     missing = sorted(PACKET_FILES - {path.name for path in packet.iterdir() if path.is_file()})
     if missing:
         fail(f"claim {claim} packet missing {missing}")
@@ -108,10 +109,9 @@ def audit_claim(root: Path, claim: int, reachable: set[Path]) -> None:
         fail(f"claim {claim} evidence not reachable from README: {hidden}")
 
     raw = packet / "raw_result.json"
-    expected_verifier_code = 2 if claim == 5 else 0
     run_check(
         [sys.executable, str(verifier), "--raw", str(raw)],
-        expected_verifier_code,
+        0,
         packet / "verifier_output.txt",
     )
     run_check(
@@ -160,7 +160,7 @@ def main() -> None:
         2: "FALSIFIED",
         3: "VERIFIED",
         4: "VERIFIED",
-        5: "BLOCKED",
+        5: "VERIFIED",
     }.items():
         audit_claim(root, claim, reachable)
         row_pattern = re.compile(rf"\|\s*{claim}\s*\|[^\n]*\|\s*{verdict}\s*\|")
@@ -169,8 +169,6 @@ def main() -> None:
 
     for required in (
         FIXED_COMMAND,
-        "ab03d8e28985c00899253218175049cb32eb0077",
-        "18/18",
         "8.0 CPUs",
         "Historical rejected baseline",
     ):

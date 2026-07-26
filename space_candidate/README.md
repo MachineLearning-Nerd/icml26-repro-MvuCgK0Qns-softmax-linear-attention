@@ -21,8 +21,11 @@ supersedes the numerical verifier at judged revision
 
 Current exact outcomes: Proposition 3.1 **FALSIFIED**, Proposition 3.4
 **FALSIFIED**, Lemma 2.1 **VERIFIED**, Theorem 4.3 **VERIFIED**, and Theorem
-5.1 **BLOCKED**. The previous live score remains `5/10`; `7–9/10` is only a
-conservative forecast, and only a new live verdict can change the score.
+5.1 **VERIFIED**. The live judge score is `8/10` at Space revision
+`29699a404594b1b4f4e0e0028e09f5b3e13cbffa`; Claims 1–4 were VERIFIED there
+and Claim 5 was inconclusive. The new Claim 5 certificate has not been judged.
+`8–10/10` is only a conservative forecast, and only a new live verdict can
+change the score.
 
 The older pages remain preserved and reachable under the exact label
 **Historical rejected baseline**.

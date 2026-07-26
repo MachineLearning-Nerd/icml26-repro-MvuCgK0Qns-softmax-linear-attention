@@ -1,0 +1,1 @@
+PASS: direct balanced-gradient-flow proof converges to the exact zero-risk Bayes endpoint for every positive-definite Sigma and every published initialization; finite covariance scale changes transfer constants only.

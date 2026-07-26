@@ -23,6 +23,12 @@
         "children": []
       },
       {
+        "slug": "historical-rejected-claim-5",
+        "title": "Historical rejected baseline - Theorem 5.1",
+        "file": "pages/historical-rejected-claim-5/page.md",
+        "children": []
+      },
+      {
         "slug": "historical-rejected-baseline",
         "title": "Historical rejected baseline",
         "file": "pages/historical-rejected-baseline/page.md",

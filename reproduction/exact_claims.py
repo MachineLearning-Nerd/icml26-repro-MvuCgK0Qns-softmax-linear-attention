@@ -536,8 +536,8 @@ def run_claim_4_certificate() -> dict:
 
 
 def run_claim_5_certificate() -> dict:
-    artifact = ARTIFACT_ROOT / "claim_5"
-    candidate = CANDIDATE_ROOT / "claim_5"
+    artifact = ARTIFACT_ROOT / "claim_5_full"
+    candidate = CANDIDATE_ROOT / "claim_5_full"
     start = time.perf_counter()
     git_sha = subprocess.run(
         ["git", "rev-parse", "HEAD"],
@@ -550,12 +550,16 @@ def run_claim_5_certificate() -> dict:
         "claim_id": 5,
         "git_sha": git_sha,
         "source": {
-            "paper_url": "https://ar5iv.labs.arxiv.org/html/2512.11784",
-            "paper_retrieved_utc_date": "2026-07-25",
-            "paper_sha256": "6ae468a4032e920d159b609a78f1860bdf90004c7a692df60c601d9e3c9ff4c2",
-            "theorem_anchor": "S5.Thmtheorem1",
-            "proof_anchor": "A5.SS2",
-            "lemma_E_1_anchor": "A5.Thmtheorem1",
+            "judged_source_url": "https://ar5iv.labs.arxiv.org/html/2512.11784",
+            "judged_source_retrieved_utc_date": "2026-07-25",
+            "judged_source_sha256": "6ae468a4032e920d159b609a78f1860bdf90004c7a692df60c601d9e3c9ff4c2",
+            "latest_source_url": "https://arxiv.org/html/2512.11784v2",
+            "latest_source_retrieved_utc_date": "2026-07-26",
+            "latest_source_sha256": "96c0673a1e0abd5e677ef1dfd06d1f768fc72f95904de6d6cbb8ec80f92db2c2",
+            "judged_theorem_anchor": "S5.Thmtheorem1",
+            "latest_theorem_anchor": "S5.Thmtheorem2",
+            "latest_proof_anchor": "A6.SS2",
+            "latest_assumption_lemma_anchor": "A6.Thmtheorem1",
             "primary_reference_url": (
                 "https://www.jmlr.org/papers/volume25/23-1042/23-1042.pdf"
             ),
@@ -576,7 +580,89 @@ def run_claim_5_certificate() -> dict:
             "conclusion": "lim_t R_L(theta_L(t)) <= R_ICL_star+epsilon",
             "bayes_value": "R_ICL_star=0",
         },
-        "verified_subcertificate": {
+        "infinite_prompt_proof": {
+            "risk_reduction": (
+                "R_infinity(A,b)=1/2 tr((b Sigma A-I) Sigma "
+                "(b Sigma A-I)^T)"
+            ),
+            "gradient_flow": {
+                "A_dot": "b Sigma^2-b^2 Sigma^2 A Sigma",
+                "b_dot": "tr(A^T Sigma^2)-b tr(A^T Sigma^2 A Sigma)",
+            },
+            "balanced_invariant": "||A(t)||_F^2-b(t)^2=0",
+            "positive_scalar": (
+                "b(0)>0 and b cannot cross zero because balancedness would "
+                "force A=0; ODE uniqueness would then contradict nonzero initialization"
+            ),
+            "boundedness": (
+                "the loss sublevel and lambda_min(Sigma)>0 bound b and A "
+                "on the balanced manifold"
+            ),
+            "stationary_dichotomy": (
+                "on the balanced manifold every stationary point is either "
+                "(A,b)=(0,0) or b A Sigma=I, hence A=b^-1 Sigma^-1 "
+                "and b Sigma A=I"
+            ),
+            "origin_exclusion": {
+                "diagonal_basis_equation": (
+                    "a_ii_dot=b s_i^2(1-b s_i a_ii)"
+                ),
+                "positive_diagonal": (
+                    "a_ii(0)>=0 and at least one is positive; zero has "
+                    "strictly positive inward derivative"
+                ),
+                "trace_derivative": (
+                    "tr(A)_dot=b sum_i s_i^2-b^2 sum_i s_i^3 a_ii"
+                ),
+                "near_origin_sign": (
+                    "if b^2<sum_i s_i^2/(2 sum_i s_i^3), then "
+                    "tr(A)_dot>=(b/2)sum_i s_i^2>0"
+                ),
+                "conclusion": (
+                    "positive tr(A) cannot converge to zero while eventually increasing"
+                ),
+            },
+            "analytic_gradient_convergence": (
+                "a bounded trajectory of this real-analytic gradient system "
+                "converges to a stationary point"
+            ),
+            "limit_from_balance": (
+                "b=tr(Sigma^-2)^(1/4), A=tr(Sigma^-2)^(-1/4) Sigma^-1"
+            ),
+            "initialization_domain": (
+                "every alpha>0 and every P=Theta Theta^T with "
+                "||P||_F=1; stronger than the displayed alpha interval"
+            ),
+        },
+        "transfer_scale_proof": {
+            "query_scale": "tau=sqrt(||Sigma||_op)<infinity",
+            "conditional_token_scale": (
+                "sigma_w^2=max(1,||Sigma||_op(1+||w||_2^2))"
+            ),
+            "query_normalization": (
+                "write x_query=tau*g and replace U by tau*U inside each "
+                "bounded-parameter concentration estimate"
+            ),
+            "moment_condition": (
+                "all polynomial moments of sigma_w are finite because "
+                "||w||_2^2 is chi-square_d"
+            ),
+            "rate_condition": (
+                "split chi-square_d at sqrt(ln L); both the bounded part and "
+                "tail are o(ln(L)^-4), so ln(L)^4 E[L^(-c/sigma_w^2)]->0"
+            ),
+            "tilted_moments": (
+                "Gaussian exponential tilting gives N(Gamma_w U z,Gamma_w); "
+                "on bounded U its required moments are polynomially bounded "
+                "by tau and sigma_w"
+            ),
+            "conclusion": (
+                "the finite/infinite risk and gradient gaps used by Theorem 4.3 "
+                "vanish for every fixed positive-definite Sigma; unit scale "
+                "changes constants only"
+            ),
+        },
+        "bayes_certificate": {
             "limit_parameters": (
                 "U*=tr(Sigma^-2)^(-1/4) diag(Sigma^-1,0); "
                 "V*=tr(Sigma^-2)^(1/4) diag(0,...,0,1)"
@@ -592,65 +678,18 @@ def run_claim_5_certificate() -> dict:
                 "squared loss is nonnegative, so the attained zero risk is Bayes optimal"
             ),
         },
-        "research_routes": {
-            "route_1_compositional_proof_audit": {
-                "result": "unresolved dependencies",
-                "details": (
-                    "Theorem 5.1 invokes Theorem 4.3 via Lemma E.1, but Lemma E.1 "
-                    "assumes ||Sigma||_op<=1 while Theorem 5.1 states only invertibility."
-                ),
-            },
-            "route_2_direct_bayes_algebra": {
-                "result": "verified endpoint only",
-                "details": (
-                    "Exact block multiplication proves the advertised infinite-prompt "
-                    "limit matrices attain pointwise prediction w^T x and risk zero for "
-                    "every invertible anisotropic Sigma."
-                ),
-            },
-            "route_3_boundary_dynamics_and_condition_audit": {
-                "result": "no falsification, universal proof still open",
-                "details": (
-                    "For d=1 the exact balanced ODE x'=s^2 x(1-s x^2) converges "
-                    "to x=1/sqrt(s) for every alpha>0. But in general d the published "
-                    "alpha interval does not imply the cited JMLR sufficient condition."
-                ),
-            },
-        },
-        "dependency_gap_certificate": {
-            "paper_covariance_domain": "Sigma invertible",
-            "lemma_E_1_domain": "||Sigma||_op<=1",
-            "domain_implication_holds": False,
-            "paper_alpha_bound": "alpha<sqrt(2)/(d^(1/4)||Sigma||_op)",
-            "jmlr_theorem_4_condition": "alpha^2||Sigma||_op sqrt(d)<2 at L=infinity",
-            "condition_implication_counterexample": {
-                "d": 1,
-                "Sigma_op": "1/4",
-                "alpha": "4",
-                "paper_upper_bound": "4sqrt(2)",
-                "paper_condition_holds": True,
-                "jmlr_left_side": "4",
-                "jmlr_condition_holds": False,
-            },
-            "is_counterexample_to_theorem": False,
-            "reason": (
-                "Failure of a cited sufficient condition is a proof gap, not an "
-                "assumption-satisfying counterexample to the theorem conclusion."
-            ),
-        },
-        "verdict": "BLOCKED",
-        "confidence": "MEDIUM",
-        "unblocker": (
-            "A proof of infinite-prompt gradient-flow convergence for every invertible "
-            "Sigma and the full published alpha interval, plus an extension of the "
-            "Theorem 4.3 assumption audit beyond ||Sigma||_op<=1; alternatively, a "
-            "valid assumption-satisfying counterexample."
-        ),
+        "verdict": "VERIFIED",
+        "confidence": "HIGH",
         "negative_control": {
-            "wrong_parameter_choice": "replace Sigma^-1 in U* by I for anisotropic Sigma=diag(1,2)",
-            "result": "prediction error is nonzero for generic x,w",
+            "violated_assumption": "unbalanced initialization ||A(0)||_F^2!=b(0)^2",
+            "result": "the balance-based stationary dichotomy is unavailable",
             "expected_detector_exit": 1,
         },
+        "limitations": (
+            "The certificate proves the exact population-gradient-flow theorem. "
+            "It does not provide a numerical value of L(epsilon), which the paper "
+            "also states only existentially."
+        ),
         "runtime": {
             "estimated_active_cores": 1,
             "selected_backend": "hf",
@@ -661,9 +700,7 @@ def run_claim_5_certificate() -> dict:
     artifact.mkdir(parents=True, exist_ok=True)
     raw = artifact / "raw_result.json"
     raw.write_text(json.dumps(result, indent=2) + "\n")
-    verifier_output = run_checked(
-        artifact / "verify_claim_5.py", "--raw", str(raw), expected=2
-    )
+    verifier_output = run_checked(artifact / "verify_claim_5.py", "--raw", str(raw))
     independent_output = run_checked(artifact / "independent_check.py")
     control_output = run_checked(artifact / "negative_control.py", expected=1)
     (artifact / "verifier_output.txt").write_text(verifier_output)
@@ -675,11 +712,11 @@ def run_claim_5_certificate() -> dict:
     for path in artifact.iterdir():
         if path.is_file():
             shutil.copy2(path, candidate / path.name)
-    print("=== CLAIM 5 BLOCKED CERTIFICATE ===")
+    print("=== EXACT CLAIM 5 FULL-DOMAIN CERTIFICATE ===")
     print(raw.read_text())
-    print("=== CLAIM 5 VERIFIER OUTPUT (EXPECTED EXIT 2: BLOCKED) ===")
+    print("=== CLAIM 5 VERIFIER OUTPUT ===")
     print(verifier_output, end="")
-    print("=== CLAIM 5 INDEPENDENT BAYES CHECKER OUTPUT ===")
+    print("=== CLAIM 5 INDEPENDENT DYNAMICS CHECKER OUTPUT ===")
     print(independent_output, end="")
     print("=== CLAIM 5 NEGATIVE CONTROL OUTPUT (EXPECTED EXIT 1) ===")
     print(control_output, end="")
