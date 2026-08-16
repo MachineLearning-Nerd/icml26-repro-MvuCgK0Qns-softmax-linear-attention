@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "Please cite the paper and this independent evidence audit when reusing the code or results."
+title: "Independent Evidence Audit of Softmax as Linear Attention in the Large-Prompt Regime"
+type: software
+authors:
+  - family-names: Boursier
+    given-names: Etienne
+  - family-names: Boyer
+    given-names: Claire
+repository-code: "https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention"
+url: "https://arxiv.org/abs/2512.11784v2"
+abstract: "A scoped, claim-by-claim reproduction and evidence audit for the paper Softmax as Linear Attention in the Large-Prompt Regime: a Measure-based Perspective."
+keywords:
+  - machine learning
+  - attention
+  - reproduction
+  - evidence audit
+  - ICML 2026
+date-released: 2026-08-16

@@ -1,84 +1,168 @@
-# Softmax as Linear Attention — exact ICML 2026 reproduction
+# Softmax as Linear Attention in the Large-Prompt Regime
 
-[![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/blob/master/notebooks/softmax_linear_attention.py)
+Independent ICML 2026 reproduction and evidence audit for:
 
-This is an independent, CPU-only audit of
-[Softmax as Linear Attention in the Large-Prompt Regime](https://arxiv.org/abs/2512.11784)
-(OpenReview `MvuCgK0Qns`). The live judge awards `8/10` at judged Space
-revision `29699a404594b1b4f4e0e0028e09f5b3e13cbffa`: Claims 1–4 are
-resolved and Theorem 5.1 is inconclusive. The newly published revision closes
-that remaining proof gap and is awaiting a new judge verdict:
+> **Softmax as Linear Attention in the Large-Prompt Regime: a Measure-based Perspective**
 
-| Paper claim | Paper result | Observed result | Assessment |
-|---|---|---|---|
-| Proposition 3.1 | output error `≤c₁σ⁶ln(L)/L^(c₂/σ²)` | valid `L=1` witness has exact `1>0` | **FALSIFIED** as published |
-| Proposition 3.4 | analogous `U,V` gradient bounds | both exact gradient errors are `1>0`; all nine moment assumptions hold | **FALSIFIED** as published |
-| Lemma 2.1 | Gaussian attention equals `Vm+VΓKᵀQz` | dimension-free MGF proof, including singular `Γ` | **VERIFIED** |
-| Theorem 4.3 | finite-flow limiting risk transfers within arbitrary `ε` | exact `ε/2+ε/2` proof and monotonicity certificate | **VERIFIED** |
-| Theorem 5.1 | Bayes-optimal training for every invertible anisotropic `Σ` in the displayed initialization interval | direct balanced-flow proof covers every positive-definite `Σ` and every `α>0`; scale audit closes the transfer | **VERIFIED** |
+Paper authors: **Etienne Boursier** and **Claire Boyer**
+Paper: [arXiv:2512.11784v2](https://arxiv.org/abs/2512.11784) · OpenReview
+`MvuCgK0Qns`
+Final repository: [MachineLearning-Nerd/icml26-softmax-linear-attention](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention)
+Previous repository name: `icml26-repro-MvuCgK0Qns-softmax-linear-attention`
 
-The conservative projected range is `8–10/10`; the best-supported possible
-score is `10/10`, both forecasts rather than judge results. Claims 1 and 2
-retain an interpretation risk: an unstated `L≥2` repair would evade the
-boundary witnesses.
+**Collection status:** `VERIFIED_SCOPED_WITH_FALSIFIED_LITERAL_CLAIMS_AND_LIVE_SCORE_PENDING`
 
-- [Published Hugging Face Space](https://huggingface.co/spaces/DineshAI/MvuCgK0Qns)
-  at revision
-  [`e69cfc1d71736a13a805d985d6254c7da8e65a5b`](https://huggingface.co/spaces/DineshAI/MvuCgK0Qns/commit/e69cfc1d71736a13a805d985d6254c7da8e65a5b)
-  — post-publication checks pass; awaiting a new live judge verdict
-- [Illustrated claim-by-claim report](reports/claim-by-claim/report.md)
-- [Evidence-first marimo tutorial](notebooks/softmax_linear_attention.py)
-- [Current evaluator-visible verification](space_candidate/pages/current-verification/page.md)
-- Local notebook: `uvx marimo edit notebooks/softmax_linear_attention.py`
-  or `uvx marimo run notebooks/softmax_linear_attention.py`
+This repository is an independent audit. It does not claim to be the authors'
+official implementation, and it does not claim a new evaluator score. It
+preserves the historical judged result, makes every current claim contract
+explicit, and links each conclusion to a producer, an independent checker, a
+negative control, and raw evidence.
 
-## What changed and what did not
+## Results at a glance
 
-The current exact certificates replace the old numerical verifier. The
-historical `d=4`, single-head, single-layer experiments remain preserved as
-scoped corroboration: they used three covariance families, 18,144
-output/Jacobian comparisons, 36 trained models, and seeds `0,1,2`. They do not
-establish a dimension-universal theorem or the paper's `σ`-dependent rate.
+| Paper claim | Current verdict | How the verdict is produced |
+| --- | --- | --- |
+| Proposition 3.1 | `FALSIFIED_AS_WRITTEN` | A valid `d=1, L=1` Gaussian witness gives exact error `1`, while the literal `ln(L)` bound is `0`; an independent checker reproduces the contradiction. |
+| Proposition 3.4 | `FALSIFIED_AS_WRITTEN` | A valid `d=1, L=1, U=0, V=1` witness gives both exact gradient errors `1` while both literal bounds are `0`; all nine moment conditions are checked. |
+| Lemma 2.1 | `VERIFIED_SCOPED` | A dimension-free Gaussian exponential-tilt derivation is checked for singular and nonsingular covariance, then reconstructed independently over 380 exact polynomial coefficients. |
+| Theorem 4.3 | `VERIFIED_SCOPED` | An independent checker reconstructs the arbitrary-`epsilon` `epsilon/2 + epsilon/2` order chain, finite-horizon comparison, and gradient-flow risk monotonicity. |
+| Theorem 5.1 in the judged version / Theorem 5.2 in arXiv v2 | `VERIFIED_SCOPED_FULL_DOMAIN` | A direct balanced matrix-gradient-flow proof covers every positive-definite covariance and the full stated initialization domain; a covariance-scale transfer closes the finite-prompt step. |
 
-The new proof certificates are not downscaled simulations. Claims 1 and 2 use
-one-dimensional witnesses because one assumption-satisfying counterexample is
-sufficient to resolve a universal statement. Claims 3 and 4 are
-dimension-free and arbitrary-`ε`, respectively. Claim 5 uses a direct
-dimension-general proof, not the narrower cited sufficient condition.
+Claims 1 and 2 are successful falsifications of the statements as literally
+published, not failed software tests. If the intended theorem silently
+requires `L >= 2` or sufficiently large `L`, that is an interpretation or
+revision issue and is recorded as a limitation. Claims 3--5 are scoped to the
+source versions and assumptions recorded in `SOURCE_MANIFEST.md`.
 
-Formal compute was Hugging Face `cpu-upgrade`, CPU only: 8-vCPU cgroup quota,
-32 GB RAM, Python 3.12, and the locked `uv` environment. No GPU was used.
+## Historical evaluator result
 
-## Experiment log
+The historical live evaluator awarded **8/10** at judged Space revision
+`29699a404594b1b4f4e0e0028e09f5b3e13cbffa`. The published candidate revision
+`e69cfc1d71736a13a805d985d6254c7da8e65a5b` contains the full-domain Claim 5
+certificate and passed the post-publication preservation checks. No new live
+judge result is claimed here; `8--10/10` and `10/10` are forecasts only.
 
-Every formal node inherited the same command verbatim:
-`uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py`.
+## Evidence workflow
 
-| Branch / experiment | Purpose or change | Exact run command | Assessment / outcome | Compute |
-|---|---|---|---|---|
-| [`orx/validated-5-10-baseline`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/validated-5-10-baseline) | Freeze the judged numerical baseline and locked environment | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | 8/8 baseline tests; historical toy evidence | HF `cpu-upgrade`, 8-vCPU quota, 49 s |
-| [`orx/prop-3-1-literal-l-1-certificate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/prop-3-1-literal-l-1-certificate) | Literal Proposition 3.1 contract and counterexample | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | FALSIFIED; cumulative tests pass | HF `cpu-upgrade`, 8-vCPU quota, 48 s |
-| [`orx/prop-3-4-literal-l-1-certificate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/prop-3-4-literal-l-1-certificate) | Literal gradient-bound contract plus Assumption 3.3 audit | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | FALSIFIED; cumulative tests pass | HF `cpu-upgrade`, 8-vCPU quota, 48 s |
-| [`orx/lemma-2-1-dimension-free-proof-certificate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/lemma-2-1-dimension-free-proof-certificate) | Replace finite quadrature with a dimension-free proof | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | VERIFIED; cumulative tests pass | HF `cpu-upgrade`, 8-vCPU quota, 48 s |
-| [`orx/theorem-4-3-epsilon-transfer-proof-certificate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/theorem-4-3-epsilon-transfer-proof-certificate) | Reconstruct the full arbitrary-`ε` risk-transfer proof | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | VERIFIED; cumulative tests pass | HF `cpu-upgrade`, 8-vCPU quota, 47 s |
-| [`orx/theorem-5-1-bayes-certificate-and-dependency-aud`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/theorem-5-1-bayes-certificate-and-dependency-aud) | Prove the Bayes endpoint and audit the universal training dependencies | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | Endpoint exact; full theorem BLOCKED; 18/18 tests | HF `cpu-upgrade`, 8-vCPU quota, 47 s |
-| [`orx/theorem-5-1-full-domain-direct-proof-certificate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/theorem-5-1-full-domain-direct-proof-certificate) | Replace the narrow cited condition with a full-domain matrix-flow proof and covariance-scale audit | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | Theorem 5.1 VERIFIED; 20/20 cumulative tests | HF `cpu-upgrade`, 8-vCPU quota, 37 s |
-| [`orx/10-point-evaluator-visible-release-candidate`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/10-point-evaluator-visible-release-candidate) | Mirror the proof into canonical pages and validate the visual report/notebook | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | 20/20 tests; evaluator-visible release audit passed | HF `cpu-upgrade`, 8-vCPU quota, 37 s |
-| [`orx/final-additive-space-publication`](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/final-additive-space-publication) | Freeze manifests, preservation proof, blind reviews, and the final additive upload candidate | `uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py` | 20/20 tests; all release gates passed | HF `cpu-upgrade`, 8-vCPU quota, 37 s |
-| `master` | Publication surface for the report, notebook, and exact published text | Not run as an experiment (publication surface) | Mirrors the winning cumulative evidence | No experiment compute |
+Every current claim follows the same chain:
 
-## Reproduce
+1. The paper source and theorem anchor are pinned by hash.
+2. A `claim_contract.json` states the literal quantifiers, assumptions, and
+   acceptance condition.
+3. A producer writes a raw result with the source hash, Git SHA, environment,
+   and limitations.
+4. A separately implemented checker reconstructs the key calculation without
+   importing the reproduction implementation.
+5. A negative control is expected to fail for a specified reason.
+6. The verdict is published only when the packet and its fail-closed verifier
+   agree.
 
-The sole repository-level `.venv` is managed by `uv`; `pyproject.toml` and
-`uv.lock` pin the environment.
+The packets are under
+`space_candidate/evidence/claim_1`, `claim_2`, `claim_3`, `claim_4`, and
+`claim_5_full`. The old `claim_5` packet is retained as a historical blocked
+dependency audit; it is not the current Claim 5 verdict.
 
-```bash
+| Claim | Producer and raw evidence | Independent check | Negative control |
+| --- | --- | --- | --- |
+| Proposition 3.1 | `claim_1/reproduce.py` output and `raw_result.json` | `claim_1/independent_check.py` | `delta_0` control rejects zero-error data |
+| Proposition 3.4 | `claim_2/reproduce.py` output and `raw_result.json` | `claim_2/independent_check.py` | `delta_0` control rejects zero-gradient data |
+| Lemma 2.1 | `claim_3/raw_result.json` and exact polynomial reconstruction | `claim_3/independent_check.py` | Rademacher attention rejects the Gaussian affine formula |
+| Theorem 4.3 | `claim_4/raw_result.json` and order-chain certificate | `claim_4/independent_check.py` | Non-monotone risk control rejects finite-time closeness alone |
+| Theorem 5.1 / 5.2 | `claim_5_full/raw_result.json` and direct proof certificate | `claim_5_full/independent_check.py` | Unbalanced initialization control rejects the stationary dichotomy |
+
+The canonical summary of this mapping is
+[CLAIM_EVIDENCE.md](CLAIM_EVIDENCE.md), and the machine-readable release
+manifest is [EVIDENCE_MANIFEST.json](EVIDENCE_MANIFEST.json).
+
+## Branch guide
+
+The public branch names describe the evidence rather than the automation
+system that produced them. The exact legacy-to-final mapping and pre-cleanup
+tips are preserved in [BRANCH_AUDIT.md](BRANCH_AUDIT.md).
+
+| Final branch | Purpose |
+| --- | --- |
+| [main](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/main) | Paper-first publication surface, current README, manifests, report, and cumulative evidence |
+| [baseline/judged-8-of-10](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/baseline/judged-8-of-10) | Historical judged baseline and locked numerical environment |
+| [audit/claim-1-prop-3-1](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/audit/claim-1-prop-3-1) | Literal Proposition 3.1 boundary witness |
+| [audit/claim-2-prop-3-4](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/audit/claim-2-prop-3-4) | Literal Proposition 3.4 and Assumption 3.3 audit |
+| [proof/claim-3-lemma-2-1](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/proof/claim-3-lemma-2-1) | Dimension-free Gaussian identity proof |
+| [proof/claim-4-theorem-4-3](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/proof/claim-4-theorem-4-3) | Arbitrary-`epsilon` risk-transfer proof |
+| [audit/claim-5-dependency-gap](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/audit/claim-5-dependency-gap) | Historical Bayes endpoint and blocked dependency audit |
+| [proof/claim-5-full-domain](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/proof/claim-5-full-domain) | Full-domain balanced gradient-flow proof |
+| [release/evaluator-visible](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/release/evaluator-visible) | Evaluator-visible report and verification release |
+| [release/10-point-candidate](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/release/10-point-candidate) | Candidate release containing the full Claim 5 evidence |
+| [release/final-publication](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/release/final-publication) | Final publication manifest and preservation audits |
+
+No branch name is evidence by itself. The branch is a reproducibility route;
+the claim packet, raw result, checker, control, and source audit are the
+evidence.
+
+## Reproduce the recorded experiment
+
+The locked environment and formal command are:
+
+~~~bash
 uv sync --frozen
 uv run python reproduction/reproduce.py --output-dir outputs/full
 uv run python -m unittest -v reproduction/test_reproduction.py
-```
+~~~
 
-The formal experiment command combines those steps exactly as shown in the
-experiment log. Raw numerical CSVs remain in `outputs/full`; current exact
-contracts, raw JSON, checkers, controls, source audits, and limitations are in
-`space_candidate/evidence`.
+The exact cumulative command historically used for each experiment was:
+
+~~~bash
+uv sync --frozen && uv run python reproduction/reproduce.py --output-dir outputs/full && uv run python -m unittest -v reproduction/test_reproduction.py
+~~~
+
+The lightweight cross-file release check is:
+
+~~~bash
+uv run python verify_final.py
+~~~
+
+The formal Claim 5 run passed **20/20** tests at scientific Git SHA
+`64130159f3df3a0053280ffde22bb70a7c791265` in HF run
+`fa29e4cb-51dc-4ede-93c6-40a6517816f4`. The environment was CPU-only:
+Python 3.12, NumPy 2.3.5, SciPy 1.17.1, and an 8-CPU HF
+`cpu-upgrade` allocation. No GPU was used.
+
+## Citation
+
+~~~bibtex
+@misc{boursier2026softmax,
+  title         = {Softmax as Linear Attention in the Large-Prompt Regime: a Measure-based Perspective},
+  author        = {Boursier, Etienne and Boyer, Claire},
+  year          = {2026},
+  eprint        = {2512.11784},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2512.11784}
+}
+~~~
+
+Please also cite this audit with the metadata in
+[CITATION.cff](CITATION.cff) when reusing its evidence or scripts.
+
+## Thank you
+
+Thank you to **Etienne Boursier** and **Claire Boyer** for making the paper,
+its mathematical statements, and the surrounding research direction available
+for careful independent study. This repository is intended as a respectful,
+traceable reproduction and audit: disagreements are recorded against explicit
+source versions and assumptions, and positive results are limited to the
+evidence that was actually checked.
+
+## Scope and limitations
+
+- The two `L=1` results are literal-contract falsifications; they do not prove
+  that a repaired, sufficiently-large-prompt statement is false.
+- Theorem 4.3 is qualitative and does not produce a numerical
+  `L(epsilon)`.
+- Theorem 5.1 / 5.2 is a proof certificate for the stated population
+  gradient-flow model and initialization domain; it does not claim a finite
+  experimental rate beyond the recorded transfer argument.
+- Historical finite-prompt CSVs are retained as corroboration and are not
+  presented as universal theorem proofs.
+- The pinned official repository is provenance only. The current audit imports
+  no official implementation module; the clean-room boundary is documented in
+  [SOURCE_AUDIT.md](SOURCE_AUDIT.md).

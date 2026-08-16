@@ -209,15 +209,15 @@ revision.
 
 ## Experiment lineage
 
-- [Validated 5/10 baseline](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/validated-5-10-baseline)
-- [Proposition 3.1 literal certificate](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/prop-3-1-literal-l-1-certificate)
-- [Proposition 3.4 literal certificate](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/prop-3-4-literal-l-1-certificate)
-- [Lemma 2.1 dimension-free certificate](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/lemma-2-1-dimension-free-proof-certificate)
-- [Theorem 4.3 transfer certificate](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/theorem-4-3-epsilon-transfer-proof-certificate)
-- [Theorem 5.1 Bayes and dependency audit](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/theorem-5-1-bayes-certificate-and-dependency-aud)
-- [Theorem 5.1 full-domain proof certificate](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/theorem-5-1-full-domain-direct-proof-certificate)
-- [Evaluator-visible release candidate](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/10-point-evaluator-visible-release-candidate)
-- [Final additive publication](https://github.com/MachineLearning-Nerd/icml26-repro-MvuCgK0Qns-softmax-linear-attention/tree/orx/final-additive-space-publication)
+- [Validated 8/10 baseline](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/baseline/judged-8-of-10)
+- [Proposition 3.1 literal certificate](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/audit/claim-1-prop-3-1)
+- [Proposition 3.4 literal certificate](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/audit/claim-2-prop-3-4)
+- [Lemma 2.1 dimension-free certificate](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/proof/claim-3-lemma-2-1)
+- [Theorem 4.3 transfer certificate](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/proof/claim-4-theorem-4-3)
+- [Theorem 5.1 Bayes and dependency audit](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/audit/claim-5-dependency-gap)
+- [Theorem 5.1 full-domain proof certificate](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/proof/claim-5-full-domain)
+- [Evaluator-visible release candidate](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/release/10-point-candidate)
+- [Final additive publication](https://github.com/MachineLearning-Nerd/icml26-softmax-linear-attention/tree/release/final-publication)
 
 The exact machine-readable evidence and executable verifiers are under
 `space_candidate/evidence/claim_1` through `claim_5_full`. The candidate’s current
